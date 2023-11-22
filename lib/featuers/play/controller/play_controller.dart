@@ -1,0 +1,141 @@
+import 'dart:io';
+import 'package:flutter/material.dart';
+import 'package:kman/core/class/reservisionParameters.dart';
+import 'package:kman/models/reserved_model.dart';
+import 'package:uuid/uuid.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:kman/featuers/play/repositories/play_repository.dart';
+import 'package:kman/models/grounds_model.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:geocoding/geocoding.dart';
+import 'package:geolocator/geolocator.dart';
+import '../../../core/providers/storage_repository.dart';
+import '../../../core/providers/utils.dart';
+
+final getGroundsProvider = StreamProvider.family((ref, String collection) =>
+    ref.watch(playControllerProvider.notifier).getGrounds(collection));
+
+final getreservisionsProvider = StreamProvider.family((
+  ref,
+  ReservationsParams reservationsParams,
+) =>
+    ref
+        .watch(playControllerProvider.notifier)
+        .getReservisions(reservationsParams));
+
+final playControllerProvider = StateNotifierProvider((ref) => playController(
+    storageRepository: ref.watch(storageRepositoryProvider),
+    playRepository: ref.watch(PlayRepositoryProvider),
+    ref: ref));
+
+class playController extends StateNotifier<bool> {
+  final Ref _ref;
+  final PlayRepository _playRepository;
+  final StorageRepository _storageRepository;
+
+  playController(
+      {required PlayRepository playRepository,
+      required Ref ref,
+      required StorageRepository storageRepository})
+      : _playRepository = playRepository,
+        _ref = ref,
+        _storageRepository = storageRepository,
+        super(false);
+
+  void reserve(String groundId, BuildContext context, String collection,
+      ReserveModel reserveModel) async {
+    final res =
+        await _playRepository.reserve(groundId, collection, reserveModel);
+    res.fold((l) => showSnackBar(l.toString(), context),
+        (r) => showSnackBar("Your reserve Added Succefuly", context));
+  }
+
+  Stream<List<GroundModel>> getGrounds(String collection) {
+    return _playRepository.getGrounds(collection);
+  }
+
+  Stream<List<ReserveModel>> getReservisions(
+      ReservationsParams reservationsParams) {
+    return _playRepository.getReservisions(reservationsParams.collection,
+        reservationsParams.groundId, reservationsParams.day);
+  }
+
+  void askForPlayers(String groundId, BuildContext context, String collection,
+      ReserveModel reserveModel, int targetplayesNum) async {
+    String id = Uuid().v1();
+
+    final res = await _playRepository.askForPlayes(
+        groundId, collection, reserveModel, targetplayesNum);
+    res.fold((l) => showSnackBar(l.toString(), context),
+        (r) => showSnackBar("Your reserve Added Succefuly", context));
+  }
+
+  //**************************futuers only for ground owner*******************************************
+
+  void setGround(int price, String name, String phone, String futures,
+      File FilegroundImage, BuildContext context, String collection) async {
+    String id = Uuid().v1();
+    String address;
+    Position position;
+    String groundImage = "";
+    // get user loction
+    Map<Permission, PermissionStatus> statuses = await [
+      Permission.location,
+    ].request();
+
+    position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high);
+    List<Placemark> placemarks =
+        await placemarkFromCoordinates(position.latitude, position.longitude);
+    Placemark placemark = placemarks[0];
+    address = "${placemark.administrativeArea}, ${placemark.country}";
+
+    //get image
+
+    final res = await _storageRepository.storeFile(
+        path: "Grounds", id: collection, file: FilegroundImage);
+
+    res.fold((l) => showSnackBar(l.toString(), context), (r) {
+      groundImage = r;
+    });
+//set data
+    if (groundImage != "") {
+      GroundModel groundModel = GroundModel(
+          id: id,
+          name: name,
+          address: address,
+          groundOwnerId: "soon",
+          groundImage: groundImage,
+          price: price,
+          ownerNum: phone,
+          futuers: futures,
+          long: position.longitude,
+          lat: position.latitude);
+
+      final res = await _playRepository.setGround(groundModel, collection);
+      res.fold((l) => showSnackBar(l.toString(), context),
+          (r) => showSnackBar("Your Ground Added Succefuly", context));
+    }
+  }
+
+  void setResrvision(String groundId, BuildContext context, String collection,
+      String time, String day) async {
+    String id = Uuid().v1();
+
+    ReserveModel reserveModel = ReserveModel(
+        targetplayesNum: 0,
+        id: id,
+        groundId: groundId,
+        userId: "userId",
+        iscomplete: true,
+        collaborations: [],
+        time: time,
+        day: day,
+        isresrved: false);
+
+    final res = await _playRepository.setreservision(
+        groundId, collection, reserveModel);
+    res.fold((l) => showSnackBar(l.toString(), context),
+        (r) => showSnackBar("Your reserve Added Succefuly", context));
+  }
+}
