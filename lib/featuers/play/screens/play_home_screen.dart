@@ -1,9 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:get/get.dart';
+import 'package:kman/booking_screen.dart';
+import 'package:kman/core/common/getcolor.dart';
+import 'package:kman/featuers/play/screens/reservision_screen.dart';
+import 'package:kman/featuers/play/widget/play_home/custom_play_grident.dart';
+import 'package:kman/theme/pallete.dart';
 
 import '../../../core/common/error_text.dart';
 import '../../../core/common/loader.dart';
 import '../controller/play_controller.dart';
+import '../widget/play_home/custom_get_grounds.dart';
 
 class PlayHomeScreen extends ConsumerStatefulWidget {
   final String? collection;
@@ -14,16 +21,19 @@ class PlayHomeScreen extends ConsumerStatefulWidget {
 }
 
 Alignment _alignment = Alignment.centerLeft;
-FilterStatus status = FilterStatus.upcoming; //initial status
+FilterStatus status = FilterStatus.reserve; //initial status
 
-enum FilterStatus { upcoming, complete, cancel }
+enum FilterStatus { reserve, ground }
 
 class _PlayHomeScreenState extends ConsumerState<PlayHomeScreen> {
   @override
   Widget build(BuildContext context) {
-    List<dynamic> schedules = [];
+    final color = getColor(widget.collection!);
+    List<Color> backGroundGridentColor = getGrediantColors(widget.collection!);
     return Scaffold(
-      body: SafeArea(
+      appBar: AppBar(),
+      body: CustomGridentBackground(
+        colors: backGroundGridentColor,
         child: Padding(
           padding: const EdgeInsets.only(left: 20, top: 20, right: 20),
           child: Column(
@@ -58,16 +68,12 @@ class _PlayHomeScreenState extends ConsumerState<PlayHomeScreen> {
                             child: GestureDetector(
                               onTap: () {
                                 setState(() {
-                                  if (filterStatus == FilterStatus.upcoming) {
-                                    status = FilterStatus.upcoming;
+                                  if (filterStatus == FilterStatus.reserve) {
+                                    status = FilterStatus.reserve;
                                     _alignment = Alignment.centerLeft;
                                   } else if (filterStatus ==
-                                      FilterStatus.complete) {
-                                    status = FilterStatus.complete;
-                                    _alignment = Alignment.center;
-                                  } else if (filterStatus ==
-                                      FilterStatus.cancel) {
-                                    status = FilterStatus.cancel;
+                                      FilterStatus.ground) {
+                                    status = FilterStatus.ground;
                                     _alignment = Alignment.centerRight;
                                   }
                                 });
@@ -84,10 +90,10 @@ class _PlayHomeScreenState extends ConsumerState<PlayHomeScreen> {
                     alignment: _alignment,
                     duration: const Duration(milliseconds: 200),
                     child: Container(
-                      width: 160,
+                      width: 140,
                       height: 40,
                       decoration: BoxDecoration(
-                        color: Colors.lightBlue,
+                        color: color,
                         borderRadius: BorderRadius.circular(20),
                       ),
                       child: Center(
@@ -106,34 +112,11 @@ class _PlayHomeScreenState extends ConsumerState<PlayHomeScreen> {
               SizedBox(
                 height: 20,
               ),
-              ref.watch(getGroundsProvider(widget.collection!)).when(
-                  data: (ground) {
-                    return Expanded(
-                      child: ListView.builder(
-                        itemCount: ground.length,
-                        itemBuilder: ((context, index) {
-                          final grounds = ground[index];
-
-                          return Card(
-                              shape: RoundedRectangleBorder(
-                                side: const BorderSide(
-                                  color: Colors.grey,
-                                ),
-                                borderRadius: BorderRadius.circular(20),
-                              ),
-                              child: ListTile(
-                                title: Text("${grounds.name}"),
-                              ));
-                        }),
-                      ),
-                    );
-                  },
-                  error: (error, StackTrace) {
-                    print(error);
-
-                    return ErrorText(error: error.toString());
-                  },
-                  loading: () => const Loader())
+              CustomGetGrounds(
+                collection: widget.collection!,
+                color: color,
+                status: status,
+              )
             ],
           ),
         ),

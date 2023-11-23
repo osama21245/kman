@@ -4,10 +4,11 @@ import 'package:kman/featuers/play/screens/play_home_screen.dart';
 
 import 'core/constants/routesname.dart';
 import 'core/middleWare/myMiddleWare.dart';
+import 'home.dart';
 
 List<GetPage<dynamic>>? routes = [
   GetPage(
     name: "/",
-    page: () => BookingScreen(),
+    page: () => Home(),
   ), //middlewares: [myMiddlware()]
 ];

@@ -11,10 +11,26 @@ class Pallete {
   static const greyColor = Color.fromRGBO(26, 39, 45, 1); // secondary color
   static const drawerColor = Color.fromRGBO(18, 18, 18, 1);
   static const whiteColor = Colors.white;
-  static var primaryColor = Color(0xff5e0196);
-  static var blueColor = Colors.blue.shade300;
-  static var secoundaryColor = Color.fromARGB(255, 162, 26, 180);
+  static var primaryColor = Color(0xff3a7cbd);
+  static const badmention = Color(0xff5a7ebb);
+  static const volleyball = Color(0xfff03636);
+  static const basketball = Color(0xffeb811f);
+  static const paddel = Color(0xff532fab);
+  static const football = Color(0xff21b846);
+  static const tennis = Color(0xff98b229);
 
+  static const footballGridentColors = [Color(0x5fffffff), Color(0x5f22b947)];
+  static const paddelGridentColors = [Color(0x5fffffff), Color(0x5f542fab)];
+  static const basketballlGridentColors = [
+    Color(0x5fffffff),
+    Color(0x5fec821f)
+  ];
+  static const volleyballlGridentColors = [
+    Color(0x5fffffff),
+    Color(0x5ff03636)
+  ];
+  static const badmentionGridentColors = [Color(0x5fffffff), Color(0x5f5a7ebb)];
+  static const tennisGridentColors = [Color(0x5fffffff), Color(0x5f98b229)];
   // Themes
   static var darkModeAppTheme = ThemeData.dark().copyWith(
     scaffoldBackgroundColor: blackColor,

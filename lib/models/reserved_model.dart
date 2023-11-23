@@ -8,7 +8,7 @@ class ReserveModel {
   String groundId;
   String userId;
   bool iscomplete;
-  List<String> collaborations;
+  List<dynamic> collaborations;
   String time;
   String day;
   int targetplayesNum;
@@ -30,7 +30,7 @@ class ReserveModel {
     String? groundId,
     String? userId,
     bool? iscomplete,
-    List<String>? collaborations,
+    List<dynamic>? collaborations,
     String? time,
     String? day,
     int? targetplayesNum,
@@ -70,7 +70,7 @@ class ReserveModel {
       userId: map['userId'] as String,
       iscomplete: map['iscomplete'] as bool,
       collaborations:
-          List<String>.from((map['collaborations'] as List<String>)),
+          List<dynamic>.from((map['collaborations'] as List<dynamic>)),
       time: map['time'] as String,
       day: map['day'] as String,
       targetplayesNum: map['targetplayesNum'] as int,

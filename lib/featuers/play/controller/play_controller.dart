@@ -1,5 +1,7 @@
+import 'dart:async';
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:kman/core/class/reservisionParameters.dart';
 import 'package:kman/models/reserved_model.dart';
 import 'package:uuid/uuid.dart';
@@ -11,6 +13,7 @@ import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import '../../../core/providers/storage_repository.dart';
 import '../../../core/providers/utils.dart';
+import '../screens/animated_reservision_screen.dart';
 
 final getGroundsProvider = StreamProvider.family((ref, String collection) =>
     ref.watch(playControllerProvider.notifier).getGrounds(collection));
@@ -18,10 +21,23 @@ final getGroundsProvider = StreamProvider.family((ref, String collection) =>
 final getreservisionsProvider = StreamProvider.family((
   ref,
   ReservationsParams reservationsParams,
-) =>
-    ref
-        .watch(playControllerProvider.notifier)
-        .getReservisions(reservationsParams));
+) {
+  final playController = ref.watch(playControllerProvider.notifier);
+  // Use ref.read to manually manage the subscription and disposal
+  final streamController = StreamController<List<ReserveModel>>();
+  final subscription =
+      playController.getReservisions(reservationsParams).listen(
+            (data) => streamController.add(data),
+            onError: (error) => streamController.addError(error),
+          );
+
+  // Dispose the subscription when the stream is no longer needed
+  ref.onDispose(() {
+    subscription.cancel();
+    streamController.close();
+  });
+  return streamController.stream;
+});
 
 final playControllerProvider = StateNotifierProvider((ref) => playController(
     storageRepository: ref.watch(storageRepositoryProvider),
@@ -46,8 +62,10 @@ class playController extends StateNotifier<bool> {
       ReserveModel reserveModel) async {
     final res =
         await _playRepository.reserve(groundId, collection, reserveModel);
-    res.fold((l) => showSnackBar(l.toString(), context),
-        (r) => showSnackBar("Your reserve Added Succefuly", context));
+    res.fold((l) => showSnackBar(l.toString(), context), (r) {
+      Get.to(AnimatedReservisionScreen());
+      showSnackBar("Your reserve Added Succefuly", context);
+    });
   }
 
   Stream<List<GroundModel>> getGrounds(String collection) {
@@ -135,7 +153,9 @@ class playController extends StateNotifier<bool> {
 
     final res = await _playRepository.setreservision(
         groundId, collection, reserveModel);
-    res.fold((l) => showSnackBar(l.toString(), context),
-        (r) => showSnackBar("Your reserve Added Succefuly", context));
+    res.fold((l) => showSnackBar(l.toString(), context), (r) {
+      Get.to(() => AnimatedReservisionScreen());
+      showSnackBar("Your reserve Added Succefuly", context);
+    });
   }
 }

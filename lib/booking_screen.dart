@@ -10,10 +10,8 @@ import 'featuers/play/controller/play_controller.dart';
 class BookingScreen extends ConsumerStatefulWidget {
   String? collection;
   String? groundId;
-  BookingScreen({
-    this.collection,
-    this.groundId,
-  });
+  Color? color;
+  BookingScreen({this.collection, this.groundId, this.color});
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _BookingScreenState();
@@ -37,7 +35,11 @@ class _BookingScreenState extends ConsumerState<BookingScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("booking"),
+        title: Text(
+          "booking",
+          style: TextStyle(color: Colors.black),
+        ),
+        centerTitle: true,
       ),
       body: CustomScrollView(
         slivers: [
@@ -72,7 +74,7 @@ class _BookingScreenState extends ConsumerState<BookingScreen> {
                             : Colors.black,
                       ),
                       borderRadius: BorderRadius.circular(15),
-                      color: _currentIndex == index ? Colors.lightBlue : null,
+                      color: _currentIndex == index ? widget.color : null,
                     ),
                     alignment: Alignment.center,
                     child: Text(
@@ -91,6 +93,7 @@ class _BookingScreenState extends ConsumerState<BookingScreen> {
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 80),
               child: Button(
+                color: widget.color!,
                 width: double.infinity,
                 title: 'Make Appointment',
                 onPressed: () async {
@@ -115,9 +118,9 @@ class _BookingScreenState extends ConsumerState<BookingScreen> {
       lastDay: DateTime.utc(2024, 12, 31),
       calendarFormat: _format,
       currentDay: _currentDay,
-      calendarStyle: const CalendarStyle(
+      calendarStyle: CalendarStyle(
         todayDecoration:
-            BoxDecoration(color: Colors.lightBlue, shape: BoxShape.circle),
+            BoxDecoration(color: widget.color, shape: BoxShape.circle),
       ),
       availableCalendarFormats: const {CalendarFormat.month: "Month"},
       onFormatChanged: (format) {

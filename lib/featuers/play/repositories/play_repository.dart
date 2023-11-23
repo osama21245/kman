@@ -81,6 +81,7 @@ class PlayRepository {
         .doc(groundId)
         .collection("reserve")
         .where("day", isEqualTo: day)
+        .where("isresrved", isNotEqualTo: true)
         .snapshots()
         .map((event) {
       List<ReserveModel> grounds = [];

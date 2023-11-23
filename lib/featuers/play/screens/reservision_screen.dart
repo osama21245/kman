@@ -1,7 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 import 'package:kman/core/class/reservisionParameters.dart';
@@ -14,18 +13,18 @@ import '../../../core/common/error_text.dart';
 import '../../../core/common/loader.dart';
 
 class ReservisionScreen extends ConsumerStatefulWidget {
-  String collection;
-  String groundId;
-  ReservisionScreen({
-    required this.collection,
-    required this.groundId,
-  });
+  final String? collection;
+  final String? groundId;
+  final dynamic color;
+
+  ReservisionScreen({this.collection, this.groundId, this.color});
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() => _BookingScreenState();
+  ConsumerState<ConsumerStatefulWidget> createState() =>
+      _ReservisionScreenState();
 }
 
-class _BookingScreenState extends ConsumerState<ReservisionScreen> {
+class _ReservisionScreenState extends ConsumerState<ReservisionScreen> {
   CalendarFormat _format = CalendarFormat.month;
   DateTime _focusedDay = DateTime.now();
   DateTime _currentDay = DateTime.now();
@@ -33,105 +32,70 @@ class _BookingScreenState extends ConsumerState<ReservisionScreen> {
   bool _dateSelected = false;
   bool _timeSelected = false;
   ReserveModel? reserveModel;
+  ReservationsParams? reservationsParams;
+  bool iscomplete = true;
   String? day;
+
   @override
   void initState() {
     day = DateConverted.getDate(_currentDay);
+    reservationsParams =
+        ReservationsParams(widget.collection!, widget.groundId!, day!);
     super.initState();
   }
 
   void reservision(
-      WidgetRef ref, BuildContext context, ReserveModel reserveModel) {
+    WidgetRef ref,
+    BuildContext context,
+    ReserveModel reserveModel,
+  ) {
     ref
         .watch(playControllerProvider.notifier)
-        .reserve(widget.groundId, context, widget.collection, reserveModel);
+        .reserve(widget.groundId!, context, widget.collection!, reserveModel);
   }
 
   @override
   Widget build(BuildContext context) {
-    ReservationsParams reservationsParams =
-        ReservationsParams(widget.collection, widget.groundId, day!);
-
     return Scaffold(
       appBar: AppBar(
-        title: Text("booking"),
+        centerTitle: true,
+        title: Text(
+          "Reservision",
+          style: TextStyle(color: Colors.black),
+        ),
       ),
       body: CustomScrollView(
         slivers: [
           SliverToBoxAdapter(
             child: Column(
               children: [
-                _tableCalender(),
+                _tableCalendar(),
                 Center(
                   child: Text(
-                    "Select Reservision Date",
+                    "Select Reservation Date",
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
                   ),
                 )
               ],
             ),
           ),
-          ref.watch(getreservisionsProvider(reservationsParams)).when(
-              data: (reservision) {
-                return SliverGrid(
-                    delegate: SliverChildBuilderDelegate((context, index) {
-                      final reservisions = reservision[index];
-                      return InkWell(
-                        onTap: () {
-                          setState(() {
-                            reserveModel = reservisions;
-                            _currentIndex = index;
-                            _timeSelected = true;
-                            day = DateConverted.getDate(_currentDay);
-                          });
-                        },
-                        child: Container(
-                          margin: const EdgeInsets.all(5),
-                          decoration: BoxDecoration(
-                            border: Border.all(
-                              color: _currentIndex == index
-                                  ? Colors.white
-                                  : Colors.black,
-                            ),
-                            borderRadius: BorderRadius.circular(15),
-                            color: _currentIndex == index
-                                ? Colors.lightBlue
-                                : null,
-                          ),
-                          alignment: Alignment.center,
-                          child: Text(
-                            '${reservisions.time}',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color:
-                                  _currentIndex == index ? Colors.white : null,
-                            ),
-                          ),
-                        ),
-                      );
-                    }, childCount: reservision.length),
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 4, childAspectRatio: 1.5));
-              },
-              error: (error, StackTrace) {
-                print(error);
-
-                return ErrorText(error: error.toString());
-              },
-              loading: () => const Loader()),
+          _buildReservationsList(),
           SliverToBoxAdapter(
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 80),
               child: Button(
                 width: double.infinity,
-                title: 'Make Appointment',
-                onPressed: () async {
+                color: widget.color,
+                title: iscomplete ? 'Make Appointment' : "Join",
+                onPressed: () {
                   final getDate = DateConverted.getDate(_currentDay);
                   final getTime = DateConverted.getTime(_currentIndex!);
 
-                  reservision(ref, context, reserveModel!);
+                  if (_timeSelected && _dateSelected) {
+                    reservision(ref, context, reserveModel!);
+                  }
                 },
-                disable: _timeSelected && _dateSelected ? false : true,
+                disable: !(_timeSelected && _dateSelected),
               ),
             ),
           )
@@ -140,16 +104,18 @@ class _BookingScreenState extends ConsumerState<ReservisionScreen> {
     );
   }
 
-  Widget _tableCalender() {
+  //***************************************************** */
+
+  Widget _tableCalendar() {
     return TableCalendar(
       focusedDay: _focusedDay,
       firstDay: DateTime.now(),
       lastDay: DateTime.utc(2024, 12, 31),
       calendarFormat: _format,
       currentDay: _currentDay,
-      calendarStyle: const CalendarStyle(
+      calendarStyle: CalendarStyle(
         todayDecoration:
-            BoxDecoration(color: Colors.lightBlue, shape: BoxShape.circle),
+            BoxDecoration(color: widget.color, shape: BoxShape.circle),
       ),
       availableCalendarFormats: const {CalendarFormat.month: "Month"},
       onFormatChanged: (format) {
@@ -162,8 +128,97 @@ class _BookingScreenState extends ConsumerState<ReservisionScreen> {
           _currentDay = selectedDay;
           _focusedDay = focusedDay;
           _dateSelected = true;
+          day = DateConverted.getDate(_currentDay);
+          reservationsParams =
+              ReservationsParams(widget.collection!, widget.groundId!, day!);
         });
       },
+    );
+  }
+  //***************************************************** */
+
+  Widget _buildReservationsList() {
+    return ref.watch(getreservisionsProvider(reservationsParams!)).when(
+          data: (reservations) {
+            return SliverGrid(
+              delegate: SliverChildBuilderDelegate(
+                (context, index) {
+                  final reservation = reservations[index];
+                  return _buildReservationItem(reservation, index);
+                },
+                childCount: reservations.length,
+              ),
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 4,
+                childAspectRatio: 1.5,
+              ),
+            );
+          },
+          error: (error, StackTrace) {
+            print(error);
+            return SliverToBoxAdapter(
+              child: ErrorText(error: error.toString()),
+            );
+          },
+          loading: () => const SliverToBoxAdapter(
+            child: Loader(),
+          ),
+        );
+  }
+  //***************************************************** */
+
+  Widget _buildReservationItem(ReserveModel reservation, int index) {
+    return InkWell(
+      onTap: () {
+        setState(() {
+          if (reservation.iscomplete) {
+            reserveModel = reservation;
+            _currentIndex = index;
+            _timeSelected = true;
+            iscomplete = true;
+          } else {
+            reserveModel = reservation;
+            _currentIndex = index;
+            _timeSelected = true;
+            iscomplete = false;
+          }
+        });
+      },
+      child: Container(
+        margin: const EdgeInsets.all(5),
+        decoration: BoxDecoration(
+          border: Border.all(
+            color: _currentIndex == index ? Colors.white : Colors.black,
+          ),
+          borderRadius: BorderRadius.circular(15),
+          color: _currentIndex == index
+              ? widget.color
+              : !reservation.iscomplete
+                  ? Color.fromARGB(96, 158, 158, 158)
+                  : null,
+        ),
+        alignment: Alignment.center,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              '${reservation.time}',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                color: _currentIndex == index ? Colors.white : null,
+              ),
+            ),
+            if (!reservation.iscomplete)
+              Text(
+                '${reservation.collaborations.length} Join',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: _currentIndex == index ? Colors.white : null,
+                ),
+              ),
+          ],
+        ),
+      ),
     );
   }
 }
