@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:kman/models/grounds_model.dart';
 import 'package:kman/theme/pallete.dart';
 
+import 'showrating.dart';
+
 class CustomPlayCard extends StatelessWidget {
   GroundModel groundModel;
   Color color;
@@ -26,7 +28,7 @@ class CustomPlayCard extends StatelessWidget {
           children: [
             Container(
               padding:
-                  EdgeInsets.fromLTRB(15 * fem, 78 * fem, 15 * fem, 100 * fem),
+                  EdgeInsets.fromLTRB(15 * fem, 78 * fem, 15 * fem, 104 * fem),
               width: double.infinity,
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(size.width * 0.02),
@@ -53,6 +55,15 @@ class CustomPlayCard extends StatelessWidget {
                         fontSize: size.width * 0.06,
                         fontWeight: FontWeight.w600),
                   ),
+                  SizedBox(
+                    height: size.width * 0.01,
+                  ),
+                  RatingDisplayWidget(
+                    rating: 4.5,
+                  ),
+                  SizedBox(
+                    height: size.width * 0.03,
+                  ),
                   Row(
                     children: [
                       Image.asset(
@@ -65,12 +76,14 @@ class CustomPlayCard extends StatelessWidget {
                       Text(
                         "${groundModel.address}",
                         style: TextStyle(
-                            color: Pallete.whiteColor,
-                            fontFamily: "Muller",
-                            fontSize: size.width * 0.06,
-                            fontWeight: FontWeight.w300),
+                          color: Pallete.whiteColor,
+                          fontSize: size.width * 0.04,
+                        ),
                       )
                     ],
+                  ),
+                  SizedBox(
+                    height: size.width * 0.07,
                   ),
                   Padding(
                     padding: const EdgeInsets.all(8.0),

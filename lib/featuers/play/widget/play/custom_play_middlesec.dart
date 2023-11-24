@@ -4,9 +4,11 @@ import 'package:flutter/material.dart';
 class CustomPlayMiddleSec extends StatelessWidget {
   Color color;
   Size size;
+  String collection;
   CustomPlayMiddleSec({
     Key? key,
     required this.color,
+    required this.collection,
     required this.size,
   }) : super(key: key);
 
@@ -17,15 +19,15 @@ class CustomPlayMiddleSec extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Divider(
-            height: 30,
-            thickness: 5,
-            color: color,
+          Container(
+            width: size.width * 0.22,
+            decoration: BoxDecoration(
+                border: Border(bottom: BorderSide(color: color, width: 2))),
           ),
           Padding(
             padding: EdgeInsets.symmetric(horizontal: size.width * 0.03),
             child: Text(
-              "Football",
+              "$collection",
               style: TextStyle(
                 color: color,
                 fontFamily: "Muller",
@@ -34,10 +36,11 @@ class CustomPlayMiddleSec extends StatelessWidget {
               ),
             ),
           ),
-          Divider(
-            thickness: 1,
-            color: color,
-          )
+          Container(
+            width: size.width * 0.22,
+            decoration: BoxDecoration(
+                border: Border(bottom: BorderSide(color: color, width: 2))),
+          ),
         ],
       ),
     );

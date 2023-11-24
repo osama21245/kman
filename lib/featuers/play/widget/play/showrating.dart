@@ -13,7 +13,7 @@ class RatingDisplayWidget extends StatelessWidget {
       rating: rating,
       itemBuilder: (context, index) => Icon(
         Icons.star,
-        color: Colors.amber,
+        color: Color.fromARGB(255, 251, 255, 42),
       ),
       itemCount: 5,
       itemSize: 20.0,

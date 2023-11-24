@@ -48,7 +48,8 @@ class _PlayHomeScreenState extends ConsumerState<PlayHomeScreen> {
                 thickness: 3,
                 color: Colors.black,
               ),
-              CustomPlayMiddleSec(color: color, size: size),
+              CustomPlayMiddleSec(
+                  color: color, size: size, collection: widget.collection!),
               SizedBox(
                 width: size.height * 0.09,
               ),
