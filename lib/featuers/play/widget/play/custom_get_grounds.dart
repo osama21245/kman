@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
 import 'package:kman/featuers/play/screens/play_home_screen.dart';
+import 'package:kman/featuers/play/widget/play/custom_play_card.dart';
 
 import '../../../../core/common/error_text.dart';
 import '../../../../core/common/loader.dart';
@@ -28,27 +29,17 @@ class CustomGetGrounds extends ConsumerWidget {
               itemBuilder: ((context, index) {
                 final grounds = ground[index];
                 return InkWell(
-                  onTap: () {
-                    if (status == FilterStatus.ground) {
-                    } else {
-                      Get.to(ReservisionScreen(
-                        color: color,
-                        collection: collection,
-                        groundId: grounds.id,
-                      ));
-                    }
-                  },
-                  child: Card(
-                      shape: RoundedRectangleBorder(
-                        side: const BorderSide(
-                          color: Color.fromARGB(255, 228, 227, 227),
-                        ),
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      child: ListTile(
-                        title: Text("${grounds.name}"),
-                      )),
-                );
+                    onTap: () {
+                      if (status == FilterStatus.Grounds) {
+                      } else {
+                        Get.to(ReservisionScreen(
+                          color: color,
+                          collection: collection,
+                          groundId: grounds.id,
+                        ));
+                      }
+                    },
+                    child: CustomPlayCard(color: color, groundModel: grounds));
               }),
             ),
           );

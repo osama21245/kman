@@ -1,16 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:get/get.dart';
-import 'package:kman/booking_screen.dart';
+
 import 'package:kman/core/common/getcolor.dart';
-import 'package:kman/featuers/play/screens/reservision_screen.dart';
-import 'package:kman/featuers/play/widget/play_home/custom_play_grident.dart';
+import 'package:kman/featuers/play/widget/play/custom_play_middlesec.dart';
+import 'package:kman/featuers/play/widget/play/custom_play_serarch.dart';
+import 'package:kman/featuers/play/widget/play/custom_play_uppersec.dart';
+import 'package:kman/featuers/play/widget/play/custom_play_grident.dart';
 import 'package:kman/theme/pallete.dart';
 
-import '../../../core/common/error_text.dart';
-import '../../../core/common/loader.dart';
-import '../controller/play_controller.dart';
-import '../widget/play_home/custom_get_grounds.dart';
+import '../widget/play/custom_get_grounds.dart';
 
 class PlayHomeScreen extends ConsumerStatefulWidget {
   final String? collection;
@@ -21,65 +19,106 @@ class PlayHomeScreen extends ConsumerStatefulWidget {
 }
 
 Alignment _alignment = Alignment.centerLeft;
-FilterStatus status = FilterStatus.reserve; //initial status
+FilterStatus status = FilterStatus.Reserve; //initial status
 
-enum FilterStatus { reserve, ground }
+enum FilterStatus { Reserve, Grounds }
 
 class _PlayHomeScreenState extends ConsumerState<PlayHomeScreen> {
   @override
   Widget build(BuildContext context) {
+    bool checkboxValue = true;
+    Size size = MediaQuery.of(context).size;
     final color = getColor(widget.collection!);
     List<Color> backGroundGridentColor = getGrediantColors(widget.collection!);
     return Scaffold(
-      appBar: AppBar(),
-      body: CustomGridentBackground(
-        colors: backGroundGridentColor,
-        child: Padding(
-          padding: const EdgeInsets.only(left: 20, top: 20, right: 20),
+      body: SafeArea(
+        child: CustomGridentBackground(
+          colors: backGroundGridentColor,
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: <Widget>[
-              const Text(
-                'Appointment Schedule',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                ),
+            //crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              CustomPlayUpperSec(
+                color: color,
+                size: size,
               ),
               SizedBox(
-                height: 30,
+                height: size.height * 0.02,
+              ),
+              Divider(
+                thickness: 3,
+                color: Colors.black,
+              ),
+              CustomPlayMiddleSec(color: color, size: size),
+              SizedBox(
+                width: size.height * 0.09,
+              ),
+              CustomPlaySearch(size: size),
+              Padding(
+                padding: EdgeInsets.only(
+                    left: size.width * 0.045,
+                    top: size.width * 0.01,
+                    bottom: size.width * 0.017,
+                    right: size.width * 0.022),
+                child: Container(
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(size.width * 0.014),
+                        color: color),
+                    child: Row(
+                      children: [
+                        Checkbox(
+                          checkColor: color,
+                          activeColor: Pallete.whiteColor,
+                          value: checkboxValue,
+                          onChanged: (v) {},
+                        ),
+                        Text(
+                          "i'm Free to play any time,any where",
+                          style: TextStyle(color: Pallete.whiteColor),
+                        )
+                      ],
+                    )),
               ),
               Stack(
                 children: [
-                  Container(
-                    width: double.infinity,
-                    height: 40,
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(20),
-                    ),
+                  Padding(
+                    padding: EdgeInsets.only(left: size.width * 0.02),
                     child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        //this is the filter tabs
                         for (FilterStatus filterStatus in FilterStatus.values)
                           Expanded(
-                            child: GestureDetector(
+                            child: InkWell(
                               onTap: () {
                                 setState(() {
-                                  if (filterStatus == FilterStatus.reserve) {
-                                    status = FilterStatus.reserve;
+                                  if (filterStatus == FilterStatus.Reserve) {
+                                    status = FilterStatus.Reserve;
                                     _alignment = Alignment.centerLeft;
                                   } else if (filterStatus ==
-                                      FilterStatus.ground) {
-                                    status = FilterStatus.ground;
+                                      FilterStatus.Grounds) {
+                                    status = FilterStatus.Grounds;
                                     _alignment = Alignment.centerRight;
                                   }
                                 });
                               },
-                              child: Center(
-                                child: Text(filterStatus.name),
+                              child: Padding(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: size.width * 0.02),
+                                child: Container(
+                                    width: size.width * 0.47,
+                                    height: size.height * 0.054,
+                                    decoration: BoxDecoration(
+                                      color: Pallete.greyColor,
+                                      borderRadius: BorderRadius.circular(
+                                          size.width * 0.014),
+                                    ),
+                                    child: Center(
+                                      child: Text(
+                                        filterStatus.name,
+                                        style: TextStyle(
+                                            color: Pallete.whiteColor,
+                                            fontWeight: FontWeight.w600,
+                                            fontSize: size.height * 0.02),
+                                      ),
+                                    )),
                               ),
                             ),
                           ),
@@ -89,19 +128,24 @@ class _PlayHomeScreenState extends ConsumerState<PlayHomeScreen> {
                   AnimatedAlign(
                     alignment: _alignment,
                     duration: const Duration(milliseconds: 200),
-                    child: Container(
-                      width: 140,
-                      height: 40,
-                      decoration: BoxDecoration(
-                        color: color,
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      child: Center(
-                        child: Text(
-                          status.name,
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
+                    child: Padding(
+                      padding:
+                          EdgeInsets.symmetric(horizontal: size.width * 0.02),
+                      child: Container(
+                        width: size.width * 0.47,
+                        height: size.height * 0.054,
+                        decoration: BoxDecoration(
+                          color: color,
+                          borderRadius:
+                              BorderRadius.circular(size.width * 0.014),
+                        ),
+                        child: Center(
+                          child: Text(
+                            status.name,
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                         ),
                       ),
@@ -110,7 +154,7 @@ class _PlayHomeScreenState extends ConsumerState<PlayHomeScreen> {
                 ],
               ),
               SizedBox(
-                height: 20,
+                height: size.width * 0.01,
               ),
               CustomGetGrounds(
                 collection: widget.collection!,

@@ -63,6 +63,8 @@ dependencies:
   url_launcher: ^6.2.1
   emoji_picker_flutter: ^1.6.1
   table_calendar: ^3.0.9
+  convex_bottom_bar: ^3.2.0
+  flutter_rating_bar: ^4.0.1
   
   
  
@@ -117,7 +119,12 @@ flutter:
   fonts:
     - family: Muller
       fonts:
-        - asset: assets/fonts/muller/
+        - asset: assets/fonts/muller/MullerMedium.ttf
+        - asset: assets/fonts/muller/MullerRegular.ttf
+        - asset: assets/fonts/muller/Muller-ExtraBold-DEMO.ttf
+        - asset: assets/fonts/muller/Muller Narrow Demo Light 300.otf
+        - asset: assets/fonts/muller/MullerBold.ttf
+        
         
   #         style: italic
   #   - family: Trajan Pro

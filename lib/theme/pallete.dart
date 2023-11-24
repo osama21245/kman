@@ -8,7 +8,7 @@ StateNotifierProvider<ThemeNotifier, ThemeData> themeNotiferProvider =
 class Pallete {
   // Colors
   static const blackColor = Color.fromRGBO(1, 1, 1, 1); // primary color
-  static const greyColor = Color.fromRGBO(26, 39, 45, 1); // secondary color
+  static const greyColor = Color.fromRGBO(182, 181, 181, 1); // secondary color
   static const drawerColor = Color.fromRGBO(18, 18, 18, 1);
   static const whiteColor = Colors.white;
   static var primaryColor = Color(0xff3a7cbd);
