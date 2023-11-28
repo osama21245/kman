@@ -54,8 +54,21 @@ class _ReservisionScreenState extends ConsumerState<ReservisionScreen> {
         .reserve(widget.groundId!, context, widget.collection!, reserveModel);
   }
 
+  void joinGame(WidgetRef ref, BuildContext context, String reserveId) {
+    ref
+        .watch(playControllerProvider.notifier)
+        .joinGame(widget.collection!, widget.groundId!, reserveId, context);
+  }
+
+  void leaveGame(WidgetRef ref, BuildContext context, String reserveId) {
+    ref
+        .watch(playControllerProvider.notifier)
+        .joinGame(widget.collection!, widget.groundId!, reserveId, context);
+  }
+
   @override
   Widget build(BuildContext context) {
+    final String userId = "";
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -86,13 +99,25 @@ class _ReservisionScreenState extends ConsumerState<ReservisionScreen> {
               child: Button(
                 width: double.infinity,
                 color: widget.color,
-                title: iscomplete ? 'Make Appointment' : "Join",
+                title: iscomplete
+                    ? 'Make Appointment'
+                    : reserveModel!.collaborations.contains(userId)
+                        ? "Leave"
+                        : "Join",
                 onPressed: () {
                   final getDate = DateConverted.getDate(_currentDay);
                   final getTime = DateConverted.getTime(_currentIndex!);
 
                   if (_timeSelected && _dateSelected) {
-                    reservision(ref, context, reserveModel!);
+                    if (reserveModel!.collaborations.contains(userId) &&
+                        reserveModel!.iscomplete == "false") {
+                      leaveGame(ref, context, reserveModel!.id);
+                    } else if (!reserveModel!.collaborations.contains(userId) &&
+                        reserveModel!.iscomplete == "false") {
+                      joinGame(ref, context, reserveModel!.id);
+                    } else {
+                      reservision(ref, context, reserveModel!);
+                    }
                   }
                 },
                 disable: !(_timeSelected && _dateSelected),

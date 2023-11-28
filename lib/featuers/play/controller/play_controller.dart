@@ -91,6 +91,24 @@ class playController extends StateNotifier<bool> {
         (r) => showSnackBar("Your reserve Added Succefuly", context));
   }
 
+  void joinGame(String collection, String groundId, String reserveId,
+      BuildContext context) async {
+    final userId = "";
+    final res =
+        await _playRepository.joinGame(collection, groundId, reserveId, userId);
+    res.fold((l) => showSnackBar(l.message, context),
+        (r) => showSnackBar("You join succefuly", context));
+  }
+
+  void leaveGame(String collection, String groundId, String reserveId,
+      BuildContext context) async {
+    final userId = "";
+    final res = await _playRepository.leaveGame(
+        collection, groundId, reserveId, userId);
+    res.fold((l) => showSnackBar(l.message, context),
+        (r) => showSnackBar("You Leave The Game", context));
+  }
+
   Stream<List<GroundModel>> getGrounds(String collection) {
     return _playRepository.getGrounds(collection);
   }

@@ -65,6 +65,42 @@ class PlayRepository {
     }
   }
 
+  FutureVoid joinGame(String collection, String groundId, String reserveId,
+      String userId) async {
+    try {
+      return right(_firestore
+          .collection(collection)
+          .doc(groundId)
+          .collection("reserve")
+          .doc(reserveId)
+          .update({
+        'collaborations': FieldValue.arrayUnion([userId]),
+      }));
+    } on FirebaseException catch (e) {
+      throw e.message!;
+    } catch (e) {
+      return left(Failure(e.toString()));
+    }
+  }
+
+  FutureVoid leaveGame(String collection, String groundId, String reserveId,
+      String userId) async {
+    try {
+      return right(_firestore
+          .collection(collection)
+          .doc(groundId)
+          .collection("reserve")
+          .doc(reserveId)
+          .update({
+        'collaborations': FieldValue.arrayRemove([userId]),
+      }));
+    } on FirebaseException catch (e) {
+      throw e.message!;
+    } catch (e) {
+      return left(Failure(e.toString()));
+    }
+  }
+
   FutureVoid askForPlayes(String groundId, String collection,
       ReserveModel reserveModel, int targetplayesNum) async {
     try {

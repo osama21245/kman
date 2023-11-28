@@ -2,13 +2,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
-import 'package:routemaster/routemaster.dart';
-
 import 'package:kman/core/class/searchParameters.dart';
 import 'package:kman/featuers/play/controller/play_controller.dart';
 import 'package:kman/featuers/play/screens/ground_details_screen.dart';
-import 'package:kman/models/grounds_model.dart';
-
 import '../../../core/common/error_text.dart';
 import '../../../core/common/loader.dart';
 
@@ -54,7 +50,7 @@ class SearchGroundDelegate extends SearchDelegate {
     SearchParameters searchParameters = SearchParameters(collection, query);
     return ref.watch(getSearchGrounds(searchParameters)).when(
           data: (grounds) => ListView.builder(
-            itemCount: grounds.length,
+            itemCount: grounds!.length,
             itemBuilder: (BuildContext context, int index) {
               final ground = grounds[index];
               return ListTile(
