@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:kman/core/class/reservisionParameters.dart';
+import 'package:kman/core/class/searchParameters.dart';
 import 'package:kman/models/reserved_model.dart';
 import 'package:uuid/uuid.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -17,6 +18,10 @@ import '../screens/animated_reservision_screen.dart';
 
 final getGroundsProvider = StreamProvider.family((ref, String collection) =>
     ref.watch(playControllerProvider.notifier).getGrounds(collection));
+
+final getSearchGrounds = StreamProvider.family((ref,
+        SearchParameters searchParameters) =>
+    ref.watch(playControllerProvider.notifier).searchGrounds(searchParameters));
 
 final getUserGroundsProvider = StreamProvider(
     (ref) => ref.watch(playControllerProvider.notifier).getuserGrounds());
@@ -71,6 +76,11 @@ class playController extends StateNotifier<bool> {
     });
   }
 
+  void gpsTracking(double long, double lat, BuildContext context) async {
+    final res = await _playRepository.gpsTracking(long, lat);
+    res.fold((l) => showSnackBar(l.message, context), (r) => null);
+  }
+
   void askForPlayers(String groundId, BuildContext context, String collection,
       ReserveModel reserveModel, int targetplayesNum) async {
     String id = Uuid().v1();
@@ -89,6 +99,11 @@ class playController extends StateNotifier<bool> {
       ReservationsParams reservationsParams) {
     return _playRepository.getReservisions(reservationsParams.collection,
         reservationsParams.groundId, reservationsParams.day);
+  }
+
+  Stream<List<GroundModel>> searchGrounds(SearchParameters searchParameters) {
+    return _playRepository.searchGrounds(
+        searchParameters.query, searchParameters.collection);
   }
 
   Stream<List<ReserveModel>> getuserGrounds() {

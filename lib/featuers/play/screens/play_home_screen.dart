@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:kman/core/common/getcolor.dart';
+import 'package:kman/featuers/play/delegates/search_ground_delegate.dart';
 import 'package:kman/featuers/play/widget/play/custom_play_middlesec.dart';
 import 'package:kman/featuers/play/widget/play/custom_play_serarch.dart';
 import 'package:kman/core/common/custom_uppersec.dart';
@@ -53,7 +54,17 @@ class _PlayHomeScreenState extends ConsumerState<PlayHomeScreen> {
               SizedBox(
                 width: size.height * 0.09,
               ),
-              CustomPlaySearch(size: size),
+              InkWell(
+                  onTap: () => showSearch(
+                      context: context,
+                      delegate: SearchGroundDelegate(
+                        ref,
+                        widget.collection!,
+                        color,
+                        backGroundGridentColor,
+                        size,
+                      )),
+                  child: CustomPlaySearch(size: size)),
               Padding(
                 padding: EdgeInsets.only(
                     left: size.width * 0.045,

@@ -63,6 +63,7 @@ class CustomGroundMiddleSec extends StatelessWidget {
             height: size.width * 0.01,
           ),
           RatingDisplayWidget(
+            color: Pallete.fontColor,
             rating: 4.5,
           ),
           SizedBox(

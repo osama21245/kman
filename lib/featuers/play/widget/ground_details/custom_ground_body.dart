@@ -1,10 +1,12 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kman/models/grounds_model.dart';
 
 import '../../../../theme/pallete.dart';
+import '../../controller/play_controller.dart';
 
-class CustomGroundBody extends StatelessWidget {
+class CustomGroundBody extends ConsumerWidget {
   GroundModel groundModel;
   Size size;
   Color color;
@@ -15,8 +17,14 @@ class CustomGroundBody extends StatelessWidget {
       required this.color})
       : super(key: key);
 
+  void gpsTracking(WidgetRef ref, BuildContext context) {
+    ref
+        .watch(playControllerProvider.notifier)
+        .gpsTracking(groundModel.long, groundModel.lat, context);
+  }
+
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Column(
       children: [
         Image.asset("${groundModel.groundImage}"),
@@ -79,6 +87,47 @@ class CustomGroundBody extends StatelessWidget {
             )
           ],
         ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              "${groundModel.price} EGP/Hr",
+              style: TextStyle(
+                  fontFamily: "Muller",
+                  color: Pallete.fontColor,
+                  fontSize: size.width * 0.04,
+                  fontWeight: FontWeight.w600),
+            ),
+          ],
+        ),
+        Row(
+          children: [
+            Expanded(
+              child: ElevatedButton(
+                onPressed: () {},
+                child: Text("GPS", style: TextStyle(color: color)),
+                style: ElevatedButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                        borderRadius:
+                            BorderRadius.circular(size.width * 0.02))),
+              ),
+            ),
+            Expanded(
+              child: ElevatedButton(
+                onPressed: () {},
+                child: Text(
+                  "Ground Shule",
+                  style: TextStyle(color: color),
+                ),
+                style: ElevatedButton.styleFrom(
+                    backgroundColor: Pallete.whiteColor,
+                    shape: RoundedRectangleBorder(
+                        borderRadius:
+                            BorderRadius.circular(size.width * 0.02))),
+              ),
+            )
+          ],
+        )
       ],
     );
   }

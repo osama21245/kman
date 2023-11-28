@@ -7,6 +7,8 @@ import 'package:kman/core/providers/firebase_providers.dart';
 import 'package:kman/core/type_def.dart';
 import 'package:kman/models/grounds_model.dart';
 import 'package:kman/models/reserved_model.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 final PlayRepositoryProvider =
     Provider((ref) => PlayRepository(firestore: ref.watch(FirestoreProvider)));
@@ -37,6 +39,27 @@ class PlayRepository {
           .set(reserveModel.toMap()));
     } on FirebaseException catch (e) {
       throw e.toString();
+    } catch (e) {
+      return left(Failure(e.toString()));
+    }
+  }
+
+  FutureVoid gpsTracking(double long, double lat) async {
+    try {
+      Map<Permission, PermissionStatus> statuses = await [
+        Permission.location,
+      ].request();
+      if (statuses[Permission.location]!.isGranted) {
+        String url =
+            "https://www.google.com/maps/search/?api=1&query=$lat,$long";
+        if (await canLaunchUrl(Uri.parse(url))) {
+          return right(launchUrl(Uri.parse(url)));
+        } else {
+          throw "Could not open the map";
+        }
+      } else {
+        throw "Dont have permission";
+      }
     } catch (e) {
       return left(Failure(e.toString()));
     }
@@ -100,6 +123,30 @@ class PlayRepository {
       for (var document in event.docs) {
         grounds
             .add(ReserveModel.fromMap(document.data() as Map<String, dynamic>));
+      }
+      return grounds;
+    });
+  }
+
+  Stream<List<GroundModel>> searchGrounds(String query, String collection) {
+    return _firestore
+        .collection(collection)
+        .where(
+          'name',
+          isGreaterThanOrEqualTo: query.isEmpty ? 0 : query,
+          isLessThan: query.isEmpty
+              ? null
+              : query.substring(0, query.length - 1) +
+                  String.fromCharCode(
+                    query.codeUnitAt(query.length - 1) + 1,
+                  ),
+        )
+        .snapshots()
+        .map((event) {
+      List<GroundModel> grounds = [];
+      for (var community in event.docs) {
+        grounds
+            .add(GroundModel.fromMap(community.data() as Map<String, dynamic>));
       }
       return grounds;
     });
