@@ -11,6 +11,7 @@ class Pallete {
   static const greyColor = Color.fromRGBO(182, 181, 181, 1); // secondary color
   static const drawerColor = Color.fromRGBO(18, 18, 18, 1);
   static const whiteColor = Colors.white;
+  static const fontColor = Color(0xff272361);
   static var primaryColor = Color(0xff3a7cbd);
   static const badmention = Color(0xff5a7ebb);
   static const volleyball = Color(0xfff03636);

@@ -18,6 +18,9 @@ import '../screens/animated_reservision_screen.dart';
 final getGroundsProvider = StreamProvider.family((ref, String collection) =>
     ref.watch(playControllerProvider.notifier).getGrounds(collection));
 
+final getUserGroundsProvider = StreamProvider(
+    (ref) => ref.watch(playControllerProvider.notifier).getuserGrounds());
+
 final getreservisionsProvider = StreamProvider.family((
   ref,
   ReservationsParams reservationsParams,
@@ -68,16 +71,6 @@ class playController extends StateNotifier<bool> {
     });
   }
 
-  Stream<List<GroundModel>> getGrounds(String collection) {
-    return _playRepository.getGrounds(collection);
-  }
-
-  Stream<List<ReserveModel>> getReservisions(
-      ReservationsParams reservationsParams) {
-    return _playRepository.getReservisions(reservationsParams.collection,
-        reservationsParams.groundId, reservationsParams.day);
-  }
-
   void askForPlayers(String groundId, BuildContext context, String collection,
       ReserveModel reserveModel, int targetplayesNum) async {
     String id = Uuid().v1();
@@ -88,10 +81,32 @@ class playController extends StateNotifier<bool> {
         (r) => showSnackBar("Your reserve Added Succefuly", context));
   }
 
+  Stream<List<GroundModel>> getGrounds(String collection) {
+    return _playRepository.getGrounds(collection);
+  }
+
+  Stream<List<ReserveModel>> getReservisions(
+      ReservationsParams reservationsParams) {
+    return _playRepository.getReservisions(reservationsParams.collection,
+        reservationsParams.groundId, reservationsParams.day);
+  }
+
+  Stream<List<ReserveModel>> getuserGrounds() {
+    String userId = "";
+    return _playRepository.getuserGrounds(userId);
+  }
+
   //**************************futuers only for ground owner*******************************************
 
-  void setGround(int price, String name, String phone, String futures,
-      File FilegroundImage, BuildContext context, String collection) async {
+  void setGround(
+      int price,
+      String name,
+      String phone,
+      String futures,
+      File FilegroundImage,
+      BuildContext context,
+      String collection,
+      int groundPlayersNum) async {
     String id = Uuid().v1();
     String address;
     Position position;
@@ -119,6 +134,9 @@ class playController extends StateNotifier<bool> {
 //set data
     if (groundImage != "") {
       GroundModel groundModel = GroundModel(
+          groundnumber: "01220065480",
+          rating: 0,
+          groundPlayersNum: groundPlayersNum,
           id: id,
           name: name,
           address: address,
@@ -137,10 +155,12 @@ class playController extends StateNotifier<bool> {
   }
 
   void setResrvision(String groundId, BuildContext context, String collection,
-      String time, String day) async {
+      int maxPlayersNum, String time, String day) async {
     String id = Uuid().v1();
 
     ReserveModel reserveModel = ReserveModel(
+        maxPlayersNum: maxPlayersNum,
+        category: collection,
         targetplayesNum: 0,
         id: id,
         groundId: groundId,

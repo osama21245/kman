@@ -8,6 +8,9 @@ class GroundModel {
   final String groundImage;
   final String groundOwnerId;
   final int price;
+  final int rating;
+  final String groundnumber;
+  final int groundPlayersNum;
   final String ownerNum;
   final String futuers;
   final double long;
@@ -19,6 +22,9 @@ class GroundModel {
     required this.groundImage,
     required this.groundOwnerId,
     required this.price,
+    required this.rating,
+    required this.groundnumber,
+    required this.groundPlayersNum,
     required this.ownerNum,
     required this.futuers,
     required this.long,
@@ -32,6 +38,9 @@ class GroundModel {
     String? groundImage,
     String? groundOwnerId,
     int? price,
+    int? rating,
+    String? groundnumber,
+    int? groundPlayersNum,
     String? ownerNum,
     String? futuers,
     double? long,
@@ -44,6 +53,9 @@ class GroundModel {
       groundImage: groundImage ?? this.groundImage,
       groundOwnerId: groundOwnerId ?? this.groundOwnerId,
       price: price ?? this.price,
+      rating: rating ?? this.rating,
+      groundnumber: groundnumber ?? this.groundnumber,
+      groundPlayersNum: groundPlayersNum ?? this.groundPlayersNum,
       ownerNum: ownerNum ?? this.ownerNum,
       futuers: futuers ?? this.futuers,
       long: long ?? this.long,
@@ -59,6 +71,9 @@ class GroundModel {
       'groundImage': groundImage,
       'groundOwnerId': groundOwnerId,
       'price': price,
+      'rating': rating,
+      'groundnumber': groundnumber,
+      'groundPlayersNum': groundPlayersNum,
       'ownerNum': ownerNum,
       'futuers': futuers,
       'long': long,
@@ -74,6 +89,9 @@ class GroundModel {
       groundImage: map['groundImage'] as String,
       groundOwnerId: map['groundOwnerId'] as String,
       price: map['price'] as int,
+      rating: map['rating'] as int,
+      groundnumber: map['groundnumber'] as String,
+      groundPlayersNum: map['groundPlayersNum'] as int,
       ownerNum: map['ownerNum'] as String,
       futuers: map['futuers'] as String,
       long: map['long'] as double,
@@ -88,7 +106,7 @@ class GroundModel {
 
   @override
   String toString() {
-    return 'GroundModel(id: $id, name: $name, address: $address, groundImage: $groundImage, groundOwnerId: $groundOwnerId, price: $price, ownerNum: $ownerNum, futuers: $futuers, long: $long, lat: $lat)';
+    return 'GroundModel(id: $id, name: $name, address: $address, groundImage: $groundImage, groundOwnerId: $groundOwnerId, price: $price, rating: $rating, groundnumber: $groundnumber, groundPlayersNum: $groundPlayersNum, ownerNum: $ownerNum, futuers: $futuers, long: $long, lat: $lat)';
   }
 
   @override
@@ -101,6 +119,9 @@ class GroundModel {
         other.groundImage == groundImage &&
         other.groundOwnerId == groundOwnerId &&
         other.price == price &&
+        other.rating == rating &&
+        other.groundnumber == groundnumber &&
+        other.groundPlayersNum == groundPlayersNum &&
         other.ownerNum == ownerNum &&
         other.futuers == futuers &&
         other.long == long &&
@@ -115,6 +136,9 @@ class GroundModel {
         groundImage.hashCode ^
         groundOwnerId.hashCode ^
         price.hashCode ^
+        rating.hashCode ^
+        groundnumber.hashCode ^
+        groundPlayersNum.hashCode ^
         ownerNum.hashCode ^
         futuers.hashCode ^
         long.hashCode ^

@@ -23,7 +23,7 @@ class Home extends StatelessWidget {
         ),
         Divider(
           thickness: 3,
-          color: Color(0xff272361),
+          color: Pallete.fontColor,
         ),
         Padding(
           padding: EdgeInsets.all(size.height * 0.015),
@@ -33,7 +33,7 @@ class Home extends StatelessWidget {
                 fontFamily: "Muller",
                 fontWeight: FontWeight.w600,
                 fontSize: size.width * 0.08,
-                color: Color(0xff272361)),
+                color: Pallete.fontColor),
           ),
         ),
         Expanded(

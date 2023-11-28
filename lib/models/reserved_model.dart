@@ -9,6 +9,8 @@ class ReserveModel {
   String userId;
   bool iscomplete;
   List<dynamic> collaborations;
+  int maxPlayersNum;
+  String category;
   String time;
   String day;
   int targetplayesNum;
@@ -19,6 +21,8 @@ class ReserveModel {
     required this.userId,
     required this.iscomplete,
     required this.collaborations,
+    required this.maxPlayersNum,
+    required this.category,
     required this.time,
     required this.day,
     required this.targetplayesNum,
@@ -31,6 +35,8 @@ class ReserveModel {
     String? userId,
     bool? iscomplete,
     List<dynamic>? collaborations,
+    int? maxPlayersNum,
+    String? category,
     String? time,
     String? day,
     int? targetplayesNum,
@@ -42,6 +48,8 @@ class ReserveModel {
       userId: userId ?? this.userId,
       iscomplete: iscomplete ?? this.iscomplete,
       collaborations: collaborations ?? this.collaborations,
+      maxPlayersNum: maxPlayersNum ?? this.maxPlayersNum,
+      category: category ?? this.category,
       time: time ?? this.time,
       day: day ?? this.day,
       targetplayesNum: targetplayesNum ?? this.targetplayesNum,
@@ -56,6 +64,8 @@ class ReserveModel {
       'userId': userId,
       'iscomplete': iscomplete,
       'collaborations': collaborations,
+      'maxPlayersNum': maxPlayersNum,
+      'category': category,
       'time': time,
       'day': day,
       'targetplayesNum': targetplayesNum,
@@ -71,6 +81,8 @@ class ReserveModel {
       iscomplete: map['iscomplete'] as bool,
       collaborations:
           List<dynamic>.from((map['collaborations'] as List<dynamic>)),
+      maxPlayersNum: map['maxPlayersNum'] as int,
+      category: map['category'] as String,
       time: map['time'] as String,
       day: map['day'] as String,
       targetplayesNum: map['targetplayesNum'] as int,
@@ -85,7 +97,7 @@ class ReserveModel {
 
   @override
   String toString() {
-    return 'ReserveModel(id: $id, groundId: $groundId, userId: $userId, iscomplete: $iscomplete, collaborations: $collaborations, time: $time, day: $day, targetplayesNum: $targetplayesNum, isresrved: $isresrved)';
+    return 'ReserveModel(id: $id, groundId: $groundId, userId: $userId, iscomplete: $iscomplete, collaborations: $collaborations, maxPlayersNum: $maxPlayersNum, category: $category, time: $time, day: $day, targetplayesNum: $targetplayesNum, isresrved: $isresrved)';
   }
 
   @override
@@ -97,6 +109,8 @@ class ReserveModel {
         other.userId == userId &&
         other.iscomplete == iscomplete &&
         listEquals(other.collaborations, collaborations) &&
+        other.maxPlayersNum == maxPlayersNum &&
+        other.category == category &&
         other.time == time &&
         other.day == day &&
         other.targetplayesNum == targetplayesNum &&
@@ -110,6 +124,8 @@ class ReserveModel {
         userId.hashCode ^
         iscomplete.hashCode ^
         collaborations.hashCode ^
+        maxPlayersNum.hashCode ^
+        category.hashCode ^
         time.hashCode ^
         day.hashCode ^
         targetplayesNum.hashCode ^

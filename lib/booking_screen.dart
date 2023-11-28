@@ -11,7 +11,12 @@ class BookingScreen extends ConsumerStatefulWidget {
   String? collection;
   String? groundId;
   Color? color;
-  BookingScreen({this.collection, this.groundId, this.color});
+  int playersMaxNum;
+  BookingScreen(
+      {this.collection,
+      this.groundId,
+      this.color,
+      required this.playersMaxNum});
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _BookingScreenState();
@@ -27,8 +32,8 @@ class _BookingScreenState extends ConsumerState<BookingScreen> {
 
   void setReservision(
       WidgetRef ref, BuildContext context, String time, String day) {
-    ref.watch(playControllerProvider.notifier).setResrvision(
-        widget.groundId!, context, widget.collection!, time, day);
+    ref.watch(playControllerProvider.notifier).setResrvision(widget.groundId!,
+        context, widget.collection!, widget.playersMaxNum, time, day);
   }
 
   @override

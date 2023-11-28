@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 
-class CustomPlayUpperSec extends StatelessWidget {
+// ignore: must_be_immutable
+class CustomUpperSec extends StatelessWidget {
   Size size;
   Color color;
-  CustomPlayUpperSec({Key? key, required this.size, required this.color})
+  CustomUpperSec({Key? key, required this.size, required this.color})
       : super(key: key);
 
   @override

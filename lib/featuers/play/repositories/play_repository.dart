@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:kman/core/constants/firebase_constants.dart';
 import 'package:kman/core/faliure.dart';
 import 'package:kman/core/providers/firebase_providers.dart';
 import 'package:kman/core/type_def.dart';
@@ -16,8 +17,8 @@ class PlayRepository {
   PlayRepository({required FirebaseFirestore firestore})
       : _firestore = firestore;
 
-  CollectionReference get _football => _firestore.collection("football");
-  CollectionReference get _users => _firestore.collection("users");
+  CollectionReference get _users =>
+      _firestore.collection(FirebaseConstants.usersCollection);
 
   FutureVoid reserve(
       String groundId, String collection, ReserveModel reserveModel) async {
@@ -71,6 +72,17 @@ class PlayRepository {
             .add(GroundModel.fromMap(document.data() as Map<String, dynamic>));
       }
       return grounds;
+    });
+  }
+
+  Stream<List<ReserveModel>> getuserGrounds(String userId) {
+    return _users.doc(userId).collection("reserve").snapshots().map((event) {
+      List<ReserveModel> reservisions = [];
+      for (var document in event.docs) {
+        reservisions
+            .add(ReserveModel.fromMap(document.data() as Map<String, dynamic>));
+      }
+      return reservisions;
     });
   }
 
