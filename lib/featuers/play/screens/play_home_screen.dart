@@ -169,6 +169,8 @@ class _PlayHomeScreenState extends ConsumerState<PlayHomeScreen> {
                 height: size.width * 0.01,
               ),
               CustomGetGrounds(
+                backgroundColor: backGroundGridentColor,
+                size: size,
                 collection: widget.collection!,
                 color: color,
                 status: status,

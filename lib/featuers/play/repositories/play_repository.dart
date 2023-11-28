@@ -181,8 +181,7 @@ class PlayRepository {
         .map((event) {
       List<GroundModel> grounds = [];
       for (var community in event.docs) {
-        grounds
-            .add(GroundModel.fromMap(community.data() as Map<String, dynamic>));
+        grounds.add(GroundModel.fromMap(community.data()));
       }
       return grounds;
     });

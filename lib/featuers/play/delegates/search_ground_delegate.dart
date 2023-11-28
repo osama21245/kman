@@ -50,12 +50,14 @@ class SearchGroundDelegate extends SearchDelegate {
     SearchParameters searchParameters = SearchParameters(collection, query);
     return ref.watch(getSearchGrounds(searchParameters)).when(
           data: (grounds) => ListView.builder(
-            itemCount: grounds!.length,
+            itemCount: grounds.length,
             itemBuilder: (BuildContext context, int index) {
+              print("hello");
               final ground = grounds[index];
               return ListTile(
                 leading: CircleAvatar(
-                  backgroundImage: NetworkImage(ground.groundImage),
+                  backgroundImage:
+                      AssetImage("assets/page-1/images/adidas.png"),
                 ),
                 title: Text('r/${ground.name}'),
                 onTap: () => Get.to(GroundDetailsScreen(

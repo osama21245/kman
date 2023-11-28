@@ -27,7 +27,7 @@ class CustomGroundBody extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return Column(
       children: [
-        Image.asset("${groundModel.groundImage}"),
+        Image.asset("assets/page-1/images/adidas.png"),
         Row(
           children: [
             Image.asset(
@@ -68,6 +68,11 @@ class CustomGroundBody extends ConsumerWidget {
             SizedBox(
               width: size.width * 0.04,
             ),
+          ],
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
             Text(
               "Playground Features",
               style: TextStyle(
@@ -75,17 +80,17 @@ class CustomGroundBody extends ConsumerWidget {
                   fontSize: size.width * 0.034,
                   fontWeight: FontWeight.w600),
             ),
-            SizedBox(
-              width: size.width * 0.02,
-            ),
-            Text(
-              "${groundModel.groundnumber}",
-              style: TextStyle(
-                  color: Pallete.fontColor,
-                  fontSize: size.width * 0.034,
-                  fontWeight: FontWeight.w600),
-            )
           ],
+        ),
+        SizedBox(
+          width: size.width * 0.02,
+        ),
+        Text(
+          "${groundModel.futuers}",
+          style: TextStyle(
+              color: Pallete.fontColor,
+              fontSize: size.width * 0.034,
+              fontWeight: FontWeight.w600),
         ),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -104,9 +109,10 @@ class CustomGroundBody extends ConsumerWidget {
           children: [
             Expanded(
               child: ElevatedButton(
-                onPressed: () {},
+                onPressed: () => gpsTracking(ref, context),
                 child: Text("GPS", style: TextStyle(color: color)),
                 style: ElevatedButton.styleFrom(
+                    backgroundColor: Pallete.whiteColor,
                     shape: RoundedRectangleBorder(
                         borderRadius:
                             BorderRadius.circular(size.width * 0.02))),

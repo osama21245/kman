@@ -45,3 +45,52 @@
 //     );
 //   }
 // }
+
+//  void setGround(BuildContext context
+//    ) async {
+//     String id = Uuid().v1();
+//     String address;
+//     Position position;
+//     String groundImage = "asdasd";
+//     // get user loction
+//     Map<Permission, PermissionStatus> statuses = await [
+//       Permission.location,
+//     ].request();
+
+//     position = await Geolocator.getCurrentPosition(
+//         desiredAccuracy: LocationAccuracy.high);
+//     List<Placemark> placemarks =
+//         await placemarkFromCoordinates(position.latitude, position.longitude);
+//     Placemark placemark = placemarks[0];
+//     address = "${placemark.administrativeArea}, ${placemark.country}";
+
+    //get image
+
+    // final res = await _storageRepository.storeFile(
+    //     path: "Grounds", id: collection, file: FilegroundImage);
+
+    // res.fold((l) => showSnackBar(l.toString(), context), (r) {
+    //   groundImage = r;
+    // });
+//set data
+  //   if (groundImage != "") {
+  //     GroundModel groundModel = GroundModel(
+  //         groundnumber: "01220065480",
+  //         rating: 0,
+  //         groundPlayersNum: 10,
+  //         id: id,
+  //         name: "Olympic Playground",
+  //         address: address,
+  //         groundOwnerId: "soon",
+  //         groundImage: groundImage,
+  //         price: 250,
+  //         ownerNum: "01220065480",
+  //         futuers: "Free ball  , Over time , our club refree , free traning , free cold water",
+  //         long: position.longitude,
+  //         lat: position.latitude);
+
+  //     final res = await _playRepository.setGround(groundModel, "football");
+  //     res.fold((l) => showSnackBar(l.toString(), context),
+  //         (r) => showSnackBar("Your Ground Added Succefuly", context));
+  //   }
+  // }
