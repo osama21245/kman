@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:kman/home.dart';
+import 'package:kman/homemain.dart';
 import 'package:lottie/lottie.dart';
 
 import '../../../core/common/button.dart';
@@ -40,7 +41,7 @@ class AnimatedReservisionScreen extends StatelessWidget {
                 color: Colors.green,
                 width: double.infinity,
                 title: 'Back to Home Page',
-                onPressed: () => Get.offAll(Home()),
+                onPressed: () => Get.offAll(HomeMain()),
                 disable: false,
               ),
             )

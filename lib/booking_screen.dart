@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:table_calendar/table_calendar.dart';
 
+import 'HandlingDataView.dart';
+import 'core/class/statusrequest.dart';
 import 'core/common/booking_dataTime_converted.dart';
 import 'core/common/button.dart';
 import 'featuers/play/controller/play_controller.dart';
@@ -35,82 +37,87 @@ class _BookingScreenState extends ConsumerState<BookingScreen> {
 
   @override
   Widget build(BuildContext context) {
+    StatusRequest statusRequest = ref.watch(playControllerProvider);
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          "booking",
-          style: TextStyle(color: Colors.black),
-        ),
-        centerTitle: true,
-      ),
-      body: CustomScrollView(
-        slivers: [
-          SliverToBoxAdapter(
-            child: Column(
-              children: [
-                _tableCalender(),
-                Center(
-                  child: Text(
-                    "Select Reservision Date",
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-                  ),
-                )
-              ],
-            ),
+        appBar: AppBar(
+          title: Text(
+            "booking",
+            style: TextStyle(color: Colors.black),
           ),
-          SliverGrid(
-              delegate: SliverChildBuilderDelegate((context, index) {
-                return InkWell(
-                  onTap: () {
-                    setState(() {
-                      _currentIndex = index;
-                      _timeSelected = true;
-                    });
-                  },
-                  child: Container(
-                    margin: const EdgeInsets.all(5),
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                        color: _currentIndex == index
-                            ? Colors.white
-                            : Colors.black,
+          centerTitle: true,
+        ),
+        body: HandlingDataView(
+          statusRequest: statusRequest,
+          widget: CustomScrollView(
+            slivers: [
+              SliverToBoxAdapter(
+                child: Column(
+                  children: [
+                    _tableCalender(),
+                    Center(
+                      child: Text(
+                        "Select Reservision Date",
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 20),
                       ),
-                      borderRadius: BorderRadius.circular(15),
-                      color: _currentIndex == index ? widget.color : null,
-                    ),
-                    alignment: Alignment.center,
-                    child: Text(
-                      '${index + 9}:00 ${index + 9 > 11 ? "PM" : "AM"}',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: _currentIndex == index ? Colors.white : null,
-                      ),
-                    ),
-                  ),
-                );
-              }, childCount: 15),
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 4, childAspectRatio: 1.5)),
-          SliverToBoxAdapter(
-            child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 80),
-              child: Button(
-                color: widget.color!,
-                width: double.infinity,
-                title: 'Make Appointment',
-                onPressed: () async {
-                  final day = DateConverted.getDate(_currentDay);
-                  final time = DateConverted.getTime(_currentIndex!);
-
-                  setReservision(ref, context, time, day);
-                },
-                disable: _timeSelected && _dateSelected ? false : true,
+                    )
+                  ],
+                ),
               ),
-            ),
-          )
-        ],
-      ),
-    );
+              SliverGrid(
+                  delegate: SliverChildBuilderDelegate((context, index) {
+                    return InkWell(
+                      onTap: () {
+                        setState(() {
+                          _currentIndex = index;
+                          _timeSelected = true;
+                        });
+                      },
+                      child: Container(
+                        margin: const EdgeInsets.all(5),
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                            color: _currentIndex == index
+                                ? Colors.white
+                                : Colors.black,
+                          ),
+                          borderRadius: BorderRadius.circular(15),
+                          color: _currentIndex == index ? widget.color : null,
+                        ),
+                        alignment: Alignment.center,
+                        child: Text(
+                          '${index + 9}:00 ${index + 9 > 11 ? "PM" : "AM"}',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: _currentIndex == index ? Colors.white : null,
+                          ),
+                        ),
+                      ),
+                    );
+                  }, childCount: 15),
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 4, childAspectRatio: 1.5)),
+              SliverToBoxAdapter(
+                child: Container(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 80),
+                  child: Button(
+                    color: widget.color!,
+                    width: double.infinity,
+                    title: 'Make Appointment',
+                    onPressed: () async {
+                      final day = DateConverted.getDate(_currentDay);
+                      final time = DateConverted.getTime(_currentIndex!);
+
+                      setReservision(ref, context, time, day);
+                    },
+                    disable: _timeSelected && _dateSelected ? false : true,
+                  ),
+                ),
+              )
+            ],
+          ),
+        ));
   }
 
   Widget _tableCalender() {

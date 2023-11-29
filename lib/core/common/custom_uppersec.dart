@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 // ignore: must_be_immutable
 class CustomUpperSec extends StatelessWidget {
@@ -17,13 +18,16 @@ class CustomUpperSec extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          CircleAvatar(
-            radius: size.width * 0.045,
-            child: Icon(
-              Icons.arrow_back_ios_new,
-              color: Colors.white,
+          InkWell(
+            onTap: () => Get.back(),
+            child: CircleAvatar(
+              radius: size.width * 0.045,
+              child: Icon(
+                Icons.arrow_back_ios_new,
+                color: Colors.white,
+              ),
+              backgroundColor: color,
             ),
-            backgroundColor: color,
           ),
           Align(
             alignment: Alignment.center,
