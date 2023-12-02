@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:kman/HandlingDataView.dart';
+import 'package:kman/core/class/statusrequest.dart';
 
 import 'package:kman/core/common/getcolor.dart';
+import 'package:kman/featuers/play/controller/play_controller.dart';
 import 'package:kman/featuers/play/delegates/search_ground_delegate.dart';
 import 'package:kman/featuers/play/widget/play/custom_play_middlesec.dart';
 import 'package:kman/featuers/play/widget/play/custom_play_serarch.dart';
@@ -9,6 +12,7 @@ import 'package:kman/core/common/custom_uppersec.dart';
 import 'package:kman/featuers/play/widget/play/custom_play_grident.dart';
 import 'package:kman/theme/pallete.dart';
 
+import '../../../core/providers/checkInternet.dart';
 import '../widget/play/custom_get_grounds.dart';
 
 class PlayHomeScreen extends ConsumerStatefulWidget {
@@ -20,11 +24,35 @@ class PlayHomeScreen extends ConsumerStatefulWidget {
 }
 
 Alignment _alignment = Alignment.centerLeft;
-FilterStatus status = FilterStatus.Reserve; //initial status
+PlayFilterStatus status = PlayFilterStatus.Reserve;
 
-enum FilterStatus { Reserve, Grounds }
+enum PlayFilterStatus { Reserve, Grounds }
 
 class _PlayHomeScreenState extends ConsumerState<PlayHomeScreen> {
+  StatusRequest statusRequest = StatusRequest.success;
+
+  checkinternet() async {
+    setState(() {
+      statusRequest = StatusRequest.loading2;
+    });
+
+    if (await checkInternet()) {
+      setState(() {
+        statusRequest = StatusRequest.success;
+      });
+    } else {
+      setState(() {
+        statusRequest = StatusRequest.offlinefalire2;
+      });
+    }
+  }
+
+  @override
+  void initState() {
+    checkinternet();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     bool checkboxValue = true;
@@ -39,6 +67,7 @@ class _PlayHomeScreenState extends ConsumerState<PlayHomeScreen> {
             //crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               CustomUpperSec(
+                title: "Play",
                 color: color,
                 size: size,
               ),
@@ -96,17 +125,19 @@ class _PlayHomeScreenState extends ConsumerState<PlayHomeScreen> {
                     padding: EdgeInsets.only(left: size.width * 0.02),
                     child: Row(
                       children: [
-                        for (FilterStatus filterStatus in FilterStatus.values)
+                        for (PlayFilterStatus filterStatus
+                            in PlayFilterStatus.values)
                           Expanded(
                             child: InkWell(
                               onTap: () {
                                 setState(() {
-                                  if (filterStatus == FilterStatus.Reserve) {
-                                    status = FilterStatus.Reserve;
+                                  if (filterStatus ==
+                                      PlayFilterStatus.Reserve) {
+                                    status = PlayFilterStatus.Reserve;
                                     _alignment = Alignment.centerLeft;
                                   } else if (filterStatus ==
-                                      FilterStatus.Grounds) {
-                                    status = FilterStatus.Grounds;
+                                      PlayFilterStatus.Grounds) {
+                                    status = PlayFilterStatus.Grounds;
                                     _alignment = Alignment.centerRight;
                                   }
                                 });
@@ -168,13 +199,15 @@ class _PlayHomeScreenState extends ConsumerState<PlayHomeScreen> {
               SizedBox(
                 height: size.width * 0.01,
               ),
-              CustomGetGrounds(
-                backgroundColor: backGroundGridentColor,
-                size: size,
-                collection: widget.collection!,
-                color: color,
-                status: status,
-              )
+              HandlingDataView(
+                  statusRequest: statusRequest,
+                  widget: CustomGetGrounds(
+                    backgroundColor: backGroundGridentColor,
+                    size: size,
+                    collection: widget.collection!,
+                    color: color,
+                    status: status,
+                  ))
             ],
           ),
         ),

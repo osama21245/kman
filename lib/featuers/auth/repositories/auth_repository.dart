@@ -150,8 +150,19 @@ class AuthRepository {
 
   FutureVoid signInWithEmailAndPassword(String email, String password) async {
     try {
-      return right(
-          _auth.signInWithEmailAndPassword(email: email, password: password));
+      UserCredential userCredential = await _auth.signInWithEmailAndPassword(
+          email: email, password: password);
+
+      if (userCredential.user != null) {
+        return right(userCredential);
+
+        // Perform actions for a successful login
+      } else {
+        // userCredential.user is null, indicating unsuccessful login
+        throw "Invalid email or password";
+
+        // Perform actions for an unsuccessful login
+      }
     } on FirebaseException catch (e) {
       throw e;
     } catch (e) {

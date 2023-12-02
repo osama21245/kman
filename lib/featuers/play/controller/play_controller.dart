@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:kman/core/class/reservisionParameters.dart';
 import 'package:kman/core/class/searchParameters.dart';
 import 'package:kman/core/class/statusrequest.dart';
+import 'package:kman/core/providers/checkInternet.dart';
 import 'package:kman/homemain.dart';
 import 'package:kman/models/reserved_model.dart';
 import 'package:uuid/uuid.dart';
@@ -21,9 +22,8 @@ import '../screens/animated_reservision_screen.dart';
 final getGroundsProvider = StreamProvider.family((ref, String collection) =>
     ref.watch(playControllerProvider.notifier).getGrounds(collection));
 
-final getSearchGrounds = StreamProvider.family((ref,
-        SearchParameters searchParameters) =>
-    ref.watch(playControllerProvider.notifier).searchGrounds(searchParameters));
+final getSearchGrounds = StreamProvider.family((ref, String query) =>
+    ref.watch(playControllerProvider.notifier).searchGrounds(query));
 
 final getUserGroundsProvider = StreamProvider(
     (ref) => ref.watch(playControllerProvider.notifier).getuserGrounds());
@@ -108,7 +108,7 @@ class playController extends StateNotifier<StatusRequest> {
         await _playRepository.joinGame(collection, groundId, reserveId, userId);
     state = StatusRequest.success;
     res.fold((l) => showSnackBar(l.message, context), (r) {
-      Get.to(HomeMain());
+      //  Get.to(HomeMain());
       showSnackBar("You join succefuly", context);
     });
   }
@@ -122,7 +122,7 @@ class playController extends StateNotifier<StatusRequest> {
     state = StatusRequest.success;
 
     res.fold((l) => showSnackBar(l.message, context), (r) {
-      Get.to(HomeMain());
+      //  Get.to(HomeMain());
       showSnackBar("You Leave The Game", context);
     });
   }
@@ -137,9 +137,8 @@ class playController extends StateNotifier<StatusRequest> {
         reservationsParams.groundId, reservationsParams.day);
   }
 
-  Stream<List<GroundModel>> searchGrounds(SearchParameters searchParameters) {
-    return _playRepository.searchGrounds(
-        searchParameters.query, searchParameters.collection);
+  Stream<List<GroundModel>> searchGrounds(String query) {
+    return _playRepository.searchFootballGrounds(query);
   }
 
   Stream<List<ReserveModel>> getuserGrounds() {

@@ -23,28 +23,43 @@ class HandlingDataView extends StatelessWidget {
               ),
             ),
           )
-        : statusRequest == StatusRequest.offlinefaliure
-            ? Center(
-                child: Padding(
-                  padding: const EdgeInsets.all(80),
-                  child: LottieBuilder.asset(AppImageAsset.offline),
-                ),
+        : statusRequest == StatusRequest.loading2
+            ? LottieBuilder.asset(
+                height: 30,
+                AppImageAsset.loading,
+                repeat: true,
               )
-            : statusRequest == StatusRequest.serverfailure
+            : statusRequest == StatusRequest.offlinefaliure
                 ? Center(
                     child: Padding(
-                      padding: const EdgeInsets.only(top: 120),
-                      child: LottieBuilder.asset(AppImageAsset.server),
+                      padding: const EdgeInsets.all(80),
+                      child: LottieBuilder.asset(AppImageAsset.offline),
                     ),
                   )
-                : statusRequest == StatusRequest.failure
-                    ? Center(
-                        child: Padding(
-                          padding: const EdgeInsets.only(
-                              top: 200, right: 120, left: 120, bottom: 80),
-                          child: LottieBuilder.asset(AppImageAsset.nodata),
-                        ),
+                : statusRequest == StatusRequest.offlinefalire2
+                    ? LottieBuilder.asset(
+                        AppImageAsset.offline,
+                        fit: BoxFit.contain,
                       )
-                    : widget;
+                    : statusRequest == StatusRequest.serverfailure
+                        ? Center(
+                            child: Padding(
+                              padding: const EdgeInsets.only(top: 120),
+                              child: LottieBuilder.asset(AppImageAsset.server),
+                            ),
+                          )
+                        : statusRequest == StatusRequest.failure
+                            ? Center(
+                                child: Padding(
+                                  padding: const EdgeInsets.only(
+                                      top: 200,
+                                      right: 120,
+                                      left: 120,
+                                      bottom: 80),
+                                  child:
+                                      LottieBuilder.asset(AppImageAsset.nodata),
+                                ),
+                              )
+                            : widget;
   }
 }

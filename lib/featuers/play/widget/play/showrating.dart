@@ -5,8 +5,10 @@ class RatingDisplayWidget extends StatelessWidget {
   final double
       rating; // The rating value you want to display (e.g., 3.5, 4.0, etc.)
   final color;
+  Size size;
 
-  RatingDisplayWidget({required this.rating, required this.color});
+  RatingDisplayWidget(
+      {required this.rating, required this.color, required this.size});
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +19,7 @@ class RatingDisplayWidget extends StatelessWidget {
         color: color,
       ),
       itemCount: 5,
-      itemSize: 20.0,
+      itemSize: size.width * 0.06,
       direction: Axis.horizontal,
     );
   }

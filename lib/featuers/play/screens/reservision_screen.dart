@@ -1,18 +1,16 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:kman/HandlingDataView.dart';
 import 'package:kman/core/class/statusrequest.dart';
+import 'package:lottie/lottie.dart';
 import 'package:table_calendar/table_calendar.dart';
-
 import 'package:kman/core/class/reservisionParameters.dart';
 import 'package:kman/featuers/play/controller/play_controller.dart';
 import 'package:kman/models/reserved_model.dart';
-
 import '../../../core/common/booking_dataTime_converted.dart';
 import '../../../core/common/button.dart';
 import '../../../core/common/error_text.dart';
-import '../../../core/common/loader.dart';
+import '../../../core/constants/imgaeasset.dart';
 
 class ReservisionScreen extends ConsumerStatefulWidget {
   final String? collection;
@@ -72,69 +70,81 @@ class _ReservisionScreenState extends ConsumerState<ReservisionScreen> {
   Widget build(BuildContext context) {
     StatusRequest statusRequest = ref.watch(playControllerProvider);
     final String userId = "osama";
+    Size size = MediaQuery.of(context).size;
     return Scaffold(
-        appBar: AppBar(
-          centerTitle: true,
-          title: Text(
-            "Reservision",
-            style: TextStyle(color: Colors.black),
-          ),
+      appBar: AppBar(
+        centerTitle: true,
+        title: Text(
+          "Reservision",
+          style: TextStyle(color: Colors.black),
         ),
-        body: HandlingDataView(
-          statusRequest: statusRequest,
-          widget: CustomScrollView(
-            slivers: [
-              SliverToBoxAdapter(
-                child: Column(
-                  children: [
-                    _tableCalendar(),
-                    Center(
-                      child: Text(
-                        "Select Reservation Date",
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 20),
-                      ),
-                    )
-                  ],
-                ),
+      ),
+      body: Padding(
+        padding: EdgeInsets.all(size.width * 0.03),
+        child: CustomScrollView(
+          slivers: [
+            SliverToBoxAdapter(
+              child: Column(
+                children: [
+                  _tableCalendar(),
+                  SizedBox(
+                    height: size.width * 0.01,
+                  ),
+                  Center(
+                    child: Text(
+                      "Select Reservation Date",
+                      style:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                    ),
+                  ),
+                  SizedBox(
+                    height: size.width * 0.04,
+                  ),
+                ],
               ),
-              _buildReservationsList(),
-              SliverToBoxAdapter(
-                child: Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 10, vertical: 80),
-                  child: Button(
-                    width: double.infinity,
-                    color: widget.color,
-                    title: iscomplete
-                        ? 'Make Appointment'
-                        : reserveModel!.collaborations.contains(userId)
-                            ? "Leave"
-                            : "Join",
-                    onPressed: () {
-                      final getDate = DateConverted.getDate(_currentDay);
-                      final getTime = DateConverted.getTime(_currentIndex!);
+            ),
+            _buildReservationsList(size),
+            SliverToBoxAdapter(
+              child: Container(
+                padding: EdgeInsets.symmetric(
+                    horizontal: 10, vertical: size.width * 0.07),
+                child: Button(
+                  width: double.infinity,
+                  color: widget.color,
+                  title: iscomplete
+                      ? 'Make Appointment'
+                      : reserveModel!.collaborations.contains(userId)
+                          ? "Leave"
+                          : "Join",
+                  onPressed: () {
+                    final getDate = DateConverted.getDate(_currentDay);
+                    final getTime = DateConverted.getTime(_currentIndex!);
 
+                    setState(() {
                       if (_timeSelected && _dateSelected) {
                         if (reserveModel!.collaborations.contains(userId) &&
                             !reserveModel!.iscomplete) {
                           leaveGame(ref, context, reserveModel!.id);
+                          reserveModel!.collaborations.remove(userId);
                         } else if (!reserveModel!.collaborations
                                 .contains(userId) &&
                             !reserveModel!.iscomplete) {
+                          reserveModel!.collaborations.add(userId);
                           joinGame(ref, context, reserveModel!.id);
                         } else {
                           reservision(ref, context, reserveModel!);
                         }
                       }
-                    },
-                    disable: !(_timeSelected && _dateSelected),
-                  ),
+                    });
+                  },
+                  disable: !(_timeSelected && _dateSelected),
                 ),
-              )
-            ],
-          ),
-        ));
+              ),
+            )
+          ],
+        ),
+      ),
+    );
   }
 
   //***************************************************** */
@@ -170,7 +180,7 @@ class _ReservisionScreenState extends ConsumerState<ReservisionScreen> {
   }
   //***************************************************** */
 
-  Widget _buildReservationsList() {
+  Widget _buildReservationsList(Size size) {
     return ref.watch(getreservisionsProvider(reservationsParams!)).when(
           data: (reservations) {
             return SliverGrid(
@@ -193,8 +203,12 @@ class _ReservisionScreenState extends ConsumerState<ReservisionScreen> {
               child: ErrorText(error: error.toString()),
             );
           },
-          loading: () => const SliverToBoxAdapter(
-            child: Loader(),
+          loading: () => SliverToBoxAdapter(
+            child: LottieBuilder.asset(
+              height: size.width * 0.3,
+              AppImageAsset.loading,
+              repeat: true,
+            ),
           ),
         );
   }

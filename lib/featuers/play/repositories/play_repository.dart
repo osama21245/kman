@@ -164,9 +164,9 @@ class PlayRepository {
     });
   }
 
-  Stream<List<GroundModel>> searchGrounds(String query, String collection) {
+  Stream<List<GroundModel>> searchFootballGrounds(String query) {
     return _firestore
-        .collection(collection)
+        .collection("football")
         .where(
           'name',
           isGreaterThanOrEqualTo: query.isEmpty ? 0 : query,

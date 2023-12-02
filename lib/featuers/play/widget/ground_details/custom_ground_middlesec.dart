@@ -58,7 +58,7 @@ class CustomGroundMiddleSec extends StatelessWidget {
           Text(
             '$title',
             style: TextStyle(
-                color: Pallete.fontColor,
+                color: color,
                 fontFamily: "Muller",
                 fontSize: size.width * 0.06,
                 fontWeight: FontWeight.w600),
@@ -67,6 +67,7 @@ class CustomGroundMiddleSec extends StatelessWidget {
             height: size.width * 0.01,
           ),
           RatingDisplayWidget(
+            size: size,
             color: Pallete.fontColor,
             rating: 4.5,
           ),

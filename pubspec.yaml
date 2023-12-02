@@ -66,6 +66,7 @@ dependencies:
   convex_bottom_bar: ^3.2.0
   flutter_rating_bar: ^4.0.1
   flutter_otp_text_field: ^1.1.1
+  sign_in_button: ^3.0.0
   
   
  

@@ -26,34 +26,43 @@ class GroundDetailsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: FloatingActionButton(
-          onPressed: () => Get.to(BookingScreen(
-                collection: collection,
-                groundId: groundModel!.id,
-                color: color,
-                playersMaxNum: groundModel!.groundPlayersNum,
-              ))),
-      body: CustomGridentBackground(
-        colors: backgroundColor!,
-        child: Column(
-          children: [
-            CustomUpperSec(color: color!, size: size!),
-            SizedBox(
-              height: size!.height * 0.02,
-            ),
-            Divider(
-              thickness: 3,
-              color: Colors.black,
-            ),
-            CustomGroundMiddleSec(
+      body: SafeArea(
+        child: CustomGridentBackground(
+          colors: backgroundColor!,
+          child: Column(
+            children: [
+              CustomUpperSec(
                 color: color!,
                 size: size!,
-                collection: collection!,
-                title: groundModel!.name,
-                rating: groundModel!.rating),
-            CustomGroundBody(
-                color: color!, groundModel: groundModel!, size: size!)
-          ],
+                title: "Play",
+              ),
+              SizedBox(
+                height: size!.height * 0.02,
+              ),
+              Divider(
+                thickness: 3,
+                color: Colors.black,
+              ),
+              InkWell(
+                onTap: () {
+                  Get.to(BookingScreen(
+                    collection: collection,
+                    groundId: groundModel!.id,
+                    color: color,
+                    playersMaxNum: groundModel!.groundPlayersNum,
+                  ));
+                },
+                child: CustomGroundMiddleSec(
+                    color: color!,
+                    size: size!,
+                    collection: collection!,
+                    title: groundModel!.name,
+                    rating: groundModel!.rating),
+              ),
+              CustomGroundBody(
+                  color: color!, groundModel: groundModel!, size: size!)
+            ],
+          ),
         ),
       ),
     );

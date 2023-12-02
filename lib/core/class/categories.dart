@@ -7,8 +7,8 @@ class Categories {
 List<Categories> categoriesList = [
   Categories("football"),
   Categories("Tennis"),
-  Categories("Padel"),
-  Categories("Basketball"),
+  Categories("padel"),
+  Categories("basketball"),
   Categories("Volleyball"),
   Categories("Badminton")
 ];

@@ -59,6 +59,7 @@ class CustomPlayCard extends StatelessWidget {
                     height: size.width * 0.01,
                   ),
                   RatingDisplayWidget(
+                    size: size,
                     color: Color.fromARGB(255, 251, 255, 42),
                     rating: 4.5,
                   ),

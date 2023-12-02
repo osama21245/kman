@@ -48,26 +48,29 @@ class SearchGroundDelegate extends SearchDelegate {
   @override
   Widget buildSuggestions(BuildContext context) {
     SearchParameters searchParameters = SearchParameters(collection, query);
-    return ref.watch(getSearchGrounds(searchParameters)).when(
+    return ref.watch(getSearchGrounds(query)).when(
           data: (grounds) => ListView.builder(
             itemCount: grounds.length,
             itemBuilder: (BuildContext context, int index) {
               print("hello");
               final ground = grounds[index];
               return ListTile(
-                leading: CircleAvatar(
-                  backgroundImage:
-                      AssetImage("assets/page-1/images/adidas.png"),
-                ),
-                title: Text('r/${ground.name}'),
-                onTap: () => Get.to(GroundDetailsScreen(
-                  color: color,
-                  size: size,
-                  backgroundColor: backGorundColor,
-                  collection: collection,
-                  groundModel: ground,
-                )),
-              );
+                  leading: CircleAvatar(
+                    backgroundImage:
+                        AssetImage("assets/page-1/images/adidas.png"),
+                  ),
+                  title: Text('r/${ground.name}'),
+                  onTap: () async {
+                    FocusScope.of(context).unfocus();
+                    // Future.delayed(Duration(milliseconds: 30));
+                    Get.to(GroundDetailsScreen(
+                      color: color,
+                      size: size,
+                      backgroundColor: backGorundColor,
+                      collection: collection,
+                      groundModel: ground,
+                    ));
+                  });
             },
           ),
           error: (error, stackTrace) => ErrorText(

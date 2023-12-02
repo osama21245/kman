@@ -5,7 +5,9 @@ import 'package:get/get.dart';
 class CustomUpperSec extends StatelessWidget {
   Size size;
   Color color;
-  CustomUpperSec({Key? key, required this.size, required this.color})
+  String title;
+  CustomUpperSec(
+      {Key? key, required this.size, required this.color, required this.title})
       : super(key: key);
 
   @override
@@ -32,7 +34,7 @@ class CustomUpperSec extends StatelessWidget {
           Align(
             alignment: Alignment.center,
             child: Text(
-              'PLAY',
+              '$title',
               style: TextStyle(
                 color: color,
                 fontFamily: "Muller",

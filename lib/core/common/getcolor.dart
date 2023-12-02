@@ -5,7 +5,7 @@ import '../../theme/pallete.dart';
 getColor(String collection) {
   final color = collection == "football"
       ? Pallete.football
-      : collection == "Basketball"
+      : collection == "basketball"
           ? Pallete.basketball
           : collection == "Volleyball"
               ? Pallete.volleyball
@@ -13,7 +13,7 @@ getColor(String collection) {
                   ? Pallete.tennis
                   : collection == "Badminton"
                       ? Pallete.badmention
-                      : collection == "Padel"
+                      : collection == "padel"
                           ? Pallete.paddel
                           : Colors.black;
 
@@ -23,7 +23,7 @@ getColor(String collection) {
 getGrediantColors(String collection) {
   List<Color> backGroundGridentColor = collection == "football"
       ? Pallete.footballGridentColors
-      : collection == "Basketball"
+      : collection == "basketball"
           ? Pallete.basketballlGridentColors
           : collection == "Volleyball"
               ? Pallete.volleyballlGridentColors
@@ -31,7 +31,7 @@ getGrediantColors(String collection) {
                   ? Pallete.tennisGridentColors
                   : collection == "Badminton"
                       ? Pallete.badmentionGridentColors
-                      : collection == "Padel"
+                      : collection == "padel"
                           ? Pallete.paddelGridentColors
                           : Pallete.basketballlGridentColors;
   return backGroundGridentColor;

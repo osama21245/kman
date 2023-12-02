@@ -1,20 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
+import 'package:kman/core/class/statusrequest.dart';
 import 'package:kman/featuers/play/screens/ground_details_screen.dart';
 import 'package:kman/featuers/play/screens/play_home_screen.dart';
 import 'package:kman/featuers/play/widget/play/custom_play_card.dart';
-import 'package:kman/models/grounds_model.dart';
+import 'package:lottie/lottie.dart';
 
 import '../../../../core/common/error_text.dart';
-import '../../../../core/common/loader.dart';
+import '../../../../core/constants/imgaeasset.dart';
 import '../../controller/play_controller.dart';
 import '../../screens/reservision_screen.dart';
 
 class CustomGetGrounds extends ConsumerWidget {
   String collection;
   Color color;
-  FilterStatus status;
+  PlayFilterStatus status;
   Size size;
   List<Color> backgroundColor;
   CustomGetGrounds(
@@ -27,6 +28,8 @@ class CustomGetGrounds extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    StatusRequest statusRequest;
+
     return ref.watch(getGroundsProvider(collection)).when(
         data: (ground) {
           return Expanded(
@@ -36,7 +39,7 @@ class CustomGetGrounds extends ConsumerWidget {
                 final grounds = ground[index];
                 return InkWell(
                     onTap: () {
-                      if (status == FilterStatus.Grounds) {
+                      if (status == PlayFilterStatus.Grounds) {
                         Get.to(GroundDetailsScreen(
                           color: color,
                           collection: collection,
@@ -62,6 +65,10 @@ class CustomGetGrounds extends ConsumerWidget {
 
           return ErrorText(error: error.toString());
         },
-        loading: () => const Loader());
+        loading: () => LottieBuilder.asset(
+              fit: BoxFit.contain,
+              AppImageAsset.loading,
+              repeat: true,
+            ));
   }
 }
