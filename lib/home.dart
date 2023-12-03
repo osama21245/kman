@@ -1,13 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:kman/core/class/home.dart';
-import 'package:kman/featuers/play/screens/categories_screen.dart';
 import 'package:kman/featuers/play/widget/home/custom_home_card.dart';
 import 'package:kman/theme/pallete.dart';
-
 import 'featuers/play/widget/home/custom_home_uppersection.dart';
-import 'utils.dart';
 
 class Home extends StatelessWidget {
   const Home({super.key});

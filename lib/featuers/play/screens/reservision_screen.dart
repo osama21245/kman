@@ -1,6 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:kman/HandlingDataView.dart';
 import 'package:kman/core/class/statusrequest.dart';
 import 'package:lottie/lottie.dart';
 import 'package:table_calendar/table_calendar.dart';
@@ -72,79 +73,81 @@ class _ReservisionScreenState extends ConsumerState<ReservisionScreen> {
     final String userId = "osama";
     Size size = MediaQuery.of(context).size;
     return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: Text(
-          "Reservision",
-          style: TextStyle(color: Colors.black),
+        appBar: AppBar(
+          centerTitle: true,
+          title: Text(
+            "Reservision",
+            style: TextStyle(color: Colors.black),
+          ),
         ),
-      ),
-      body: Padding(
-        padding: EdgeInsets.all(size.width * 0.03),
-        child: CustomScrollView(
-          slivers: [
-            SliverToBoxAdapter(
-              child: Column(
-                children: [
-                  _tableCalendar(),
-                  SizedBox(
-                    height: size.width * 0.01,
-                  ),
-                  Center(
-                    child: Text(
-                      "Select Reservation Date",
-                      style:
-                          TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+        body: HandlingDataView(
+            statusRequest: statusRequest,
+            widget: Padding(
+              padding: EdgeInsets.all(size.width * 0.03),
+              child: CustomScrollView(
+                slivers: [
+                  SliverToBoxAdapter(
+                    child: Column(
+                      children: [
+                        _tableCalendar(),
+                        SizedBox(
+                          height: size.width * 0.01,
+                        ),
+                        Center(
+                          child: Text(
+                            "Select Reservation Date",
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 20),
+                          ),
+                        ),
+                        SizedBox(
+                          height: size.width * 0.04,
+                        ),
+                      ],
                     ),
                   ),
-                  SizedBox(
-                    height: size.width * 0.04,
-                  ),
+                  _buildReservationsList(size),
+                  SliverToBoxAdapter(
+                    child: Container(
+                      padding: EdgeInsets.symmetric(
+                          horizontal: 10, vertical: size.width * 0.07),
+                      child: Button(
+                        width: double.infinity,
+                        color: widget.color,
+                        title: iscomplete
+                            ? 'Make Appointment'
+                            : reserveModel!.collaborations.contains(userId)
+                                ? "Leave"
+                                : "Join",
+                        onPressed: () {
+                          // final getDate = DateConverted.getDate(_currentDay);
+                          // final getTime = DateConverted.getTime(_currentIndex!);
+
+                          setState(() {
+                            if (_timeSelected && _dateSelected) {
+                              if (reserveModel!.collaborations
+                                      .contains(userId) &&
+                                  !reserveModel!.iscomplete) {
+                                leaveGame(ref, context, reserveModel!.id);
+                                reserveModel!.collaborations.remove(userId);
+                              } else if (!reserveModel!.collaborations
+                                      .contains(userId) &&
+                                  !reserveModel!.iscomplete) {
+                                reserveModel!.collaborations.add(userId);
+                                joinGame(ref, context, reserveModel!.id);
+                              } else {
+                                reservision(ref, context, reserveModel!);
+                              }
+                            }
+                          });
+                        },
+                        disable: !(_timeSelected && _dateSelected),
+                      ),
+                    ),
+                  )
                 ],
               ),
-            ),
-            _buildReservationsList(size),
-            SliverToBoxAdapter(
-              child: Container(
-                padding: EdgeInsets.symmetric(
-                    horizontal: 10, vertical: size.width * 0.07),
-                child: Button(
-                  width: double.infinity,
-                  color: widget.color,
-                  title: iscomplete
-                      ? 'Make Appointment'
-                      : reserveModel!.collaborations.contains(userId)
-                          ? "Leave"
-                          : "Join",
-                  onPressed: () {
-                    final getDate = DateConverted.getDate(_currentDay);
-                    final getTime = DateConverted.getTime(_currentIndex!);
-
-                    setState(() {
-                      if (_timeSelected && _dateSelected) {
-                        if (reserveModel!.collaborations.contains(userId) &&
-                            !reserveModel!.iscomplete) {
-                          leaveGame(ref, context, reserveModel!.id);
-                          reserveModel!.collaborations.remove(userId);
-                        } else if (!reserveModel!.collaborations
-                                .contains(userId) &&
-                            !reserveModel!.iscomplete) {
-                          reserveModel!.collaborations.add(userId);
-                          joinGame(ref, context, reserveModel!.id);
-                        } else {
-                          reservision(ref, context, reserveModel!);
-                        }
-                      }
-                    });
-                  },
-                  disable: !(_timeSelected && _dateSelected),
-                ),
-              ),
-            )
-          ],
-        ),
-      ),
-    );
+            )));
   }
 
   //***************************************************** */

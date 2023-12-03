@@ -1,9 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:google_fonts/google_fonts.dart';
-
-import '../../../../utils.dart';
+import 'package:kman/featuers/coaches-gyms/screens/coaches-gyms_home_screen.dart';
 import '../../screens/categories_screen.dart';
 
 class CustomHomeCard extends StatelessWidget {
@@ -26,6 +24,9 @@ class CustomHomeCard extends StatelessWidget {
       onTap: () {
         if (section == "Play") {
           Get.to(CategoriesScreen());
+        }
+        if (section == "Coaches - Gym") {
+          Get.to(CoachesGymsHomeScreen());
         }
       },
       child: ClipRRect(

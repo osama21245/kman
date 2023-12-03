@@ -7,12 +7,14 @@ class TextFiledAuth extends ConsumerWidget {
   String name;
 
   bool? ispassword;
+  bool? istakenum;
   String? Function(String?)? validator;
   TextEditingController controller;
   TextFiledAuth(
       {super.key,
       required this.name,
       this.ispassword,
+      this.istakenum,
       required this.controller,
       this.validator});
   bool showAndHidePass = false;
@@ -42,15 +44,25 @@ class TextFiledAuth extends ConsumerWidget {
                       Icons.remove_red_eye_outlined,
                     ),
                   ),
+            contentPadding: EdgeInsets.symmetric(horizontal: size.width * 0.05),
+            enabledBorder: OutlineInputBorder(
+              borderSide: istakenum == null
+                  ? BorderSide(
+                      color: Pallete
+                          .fontColor, // Set the color you want for the enabled border
+                    )
+                  : BorderSide.none,
+              borderRadius: BorderRadius.circular(size.width * 0.02),
+            ),
             border: OutlineInputBorder(
-                borderSide: BorderSide(color: Pallete.fontColor),
+                borderSide: istakenum != null ? BorderSide.none : BorderSide(),
                 borderRadius: BorderRadius.circular(size.width * 0.02)),
             hintText: name,
             hintStyle: TextStyle(
-                color: Pallete.greyColor,
+                color: Pallete.lightgreyColor2,
                 fontFamily: "Muller",
-                fontSize: size.width * 0.06,
-                fontWeight: FontWeight.w600),
+                fontSize: size.width * 0.037,
+                fontWeight: FontWeight.w500),
           ),
         );
       },

@@ -102,11 +102,9 @@ class playController extends StateNotifier<StatusRequest> {
 
   void joinGame(String collection, String groundId, String reserveId,
       BuildContext context) async {
-    state = StatusRequest.loading;
     final userId = "osama";
     final res =
         await _playRepository.joinGame(collection, groundId, reserveId, userId);
-    state = StatusRequest.success;
     res.fold((l) => showSnackBar(l.message, context), (r) {
       //  Get.to(HomeMain());
       showSnackBar("You join succefuly", context);
@@ -115,11 +113,9 @@ class playController extends StateNotifier<StatusRequest> {
 
   void leaveGame(String collection, String groundId, String reserveId,
       BuildContext context) async {
-    state = StatusRequest.loading;
     final userId = "osama";
     final res = await _playRepository.leaveGame(
         collection, groundId, reserveId, userId);
-    state = StatusRequest.success;
 
     res.fold((l) => showSnackBar(l.message, context), (r) {
       //  Get.to(HomeMain());

@@ -136,11 +136,11 @@ class AuthRepository {
     }
   }
 
-  FutureVoid createAccountWithEmailAndPassword(
-      String email, String password) async {
+  createAccountWithEmailAndPassword(String email, String password) async {
     try {
-      return right(_auth.createUserWithEmailAndPassword(
-          email: email, password: password));
+      UserCredential userCredential = await _auth
+          .createUserWithEmailAndPassword(email: email, password: password);
+      return right(userCredential);
     } on FirebaseException catch (e) {
       throw e;
     } catch (e) {
