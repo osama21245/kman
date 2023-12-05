@@ -4,8 +4,9 @@ import 'package:kman/HandlingDataView.dart';
 import 'package:kman/core/common/custom_uppersec.dart';
 import 'package:kman/featuers/auth/controller/auth_controller.dart';
 import 'package:kman/featuers/coaches-gyms/controller/coaches-gyms_controller.dart';
-import 'package:kman/featuers/coaches-gyms/widget/coaches-gyms_home/custom_coaches-gyms_card.dart';
+import 'package:kman/featuers/coaches-gyms/widget/coaches-gyms_home/custom_coaches_card.dart';
 import 'package:kman/featuers/coaches-gyms/widget/coaches-gyms_home/custom_get_coaches.dart';
+import 'package:kman/featuers/coaches-gyms/widget/coaches-gyms_home/custom_get_gyms.dart';
 import 'package:kman/theme/pallete.dart';
 
 import '../../../core/class/statusrequest.dart';
@@ -135,7 +136,7 @@ class _CoachesGymsHomeScreenState extends ConsumerState<CoachesGymsHomeScreen> {
                     padding:
                         EdgeInsets.symmetric(horizontal: size.width * 0.02),
                     child: Container(
-                      width: size.width * 0.47,
+                      width: size.width * 0.48,
                       height: size.height * 0.054,
                       decoration: BoxDecoration(
                         color: Pallete.primaryColor,
@@ -176,7 +177,10 @@ class _CoachesGymsHomeScreenState extends ConsumerState<CoachesGymsHomeScreen> {
               height: size.height * 0.01,
             ),
             HandlingDataView(
-                statusRequest: statusRequest, widget: CustomGetCoaches())
+                statusRequest: statusRequest,
+                widget: status == CoachesGymsFilterStatus.Coaches
+                    ? CustomGetCoaches()
+                    : CustomGetGyms())
           ],
         ),
       ),

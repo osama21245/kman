@@ -6,6 +6,7 @@ import 'package:kman/core/providers/firebase_providers.dart';
 import 'package:kman/core/type_def.dart';
 import 'package:kman/models/coache_model.dart';
 import 'package:kman/models/gym_model.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 final CoachesGymsRepositoryProvider = Provider(
     (ref) => CoachesGymsRepository(firestore: ref.watch(FirestoreProvider)));
@@ -28,6 +29,23 @@ class CoachesGymsRepository {
       }
       return coaches;
     });
+  }
+
+  FutureVoid openWhatsApp(String phone) async {
+    try {
+      final whatsappUrl = 'whatsapp://send?phone=+20$phone';
+
+      // Check if the URL can be launched
+      if (await canLaunchUrl(Uri.parse(whatsappUrl))) {
+        // Launch the URL
+        return right(launchUrl(Uri.parse(whatsappUrl)));
+      } else {
+        // Handle the case where the URL can't be launched
+        throw "Could not launch WhatsApp";
+      }
+    } catch (e) {
+      return left(Failure(e.toString()));
+    }
   }
 
   Future<List<GymModel>> getGyms() {

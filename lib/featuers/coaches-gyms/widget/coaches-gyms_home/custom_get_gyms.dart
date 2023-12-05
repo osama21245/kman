@@ -3,29 +3,28 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
 import 'package:kman/featuers/coaches-gyms/screens/coaches_details_screen.dart';
 import 'package:kman/featuers/coaches-gyms/widget/coaches-gyms_home/custom_coaches_card.dart';
+import 'package:kman/featuers/coaches-gyms/widget/coaches-gyms_home/custom_gyms_card.dart';
 import 'package:lottie/lottie.dart';
 
 import '../../../../core/common/error_text.dart';
 import '../../../../core/constants/imgaeasset.dart';
 import '../../controller/coaches-gyms_controller.dart';
 
-class CustomGetCoaches extends ConsumerWidget {
-  const CustomGetCoaches({super.key});
+class CustomGetGyms extends ConsumerWidget {
+  const CustomGetGyms({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return ref.watch(getCoachesProvider).when(
-        data: (coaches) => Expanded(
+    return ref.watch(getGymsProvider).when(
+        data: (gyms) => Expanded(
               child: ListView.builder(
-                  itemCount: coaches.length,
+                  itemCount: gyms.length,
                   itemBuilder: (context, i) {
-                    final coach = coaches[i];
+                    final gym = gyms[i];
                     return InkWell(
-                        onTap: () =>
-                            Get.to(CoachesDetailsScreen(coacheModel: coach)),
-                        child: CustomCoachesCard(
-                          coacheModel: coach,
-                        ));
+                        onTap: () {},
+                        // Get.to(CoachesDetailsScreen(coacheModel: coach)),
+                        child: CustomGymCard());
                   }),
             ),
         error: (error, StackTrace) {

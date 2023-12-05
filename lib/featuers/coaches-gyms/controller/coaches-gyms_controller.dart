@@ -48,6 +48,11 @@ class CoachesGymsController extends StateNotifier<StatusRequest> {
     return _coachesGymsRepository.getGyms();
   }
 
+  void openWhatsApp(String phone, BuildContext context) async {
+    final res = await _coachesGymsRepository.openWhatsApp(phone);
+    res.fold((l) => showSnackBar(l.message, context), (r) => null);
+  }
+
   //**************************futuers only for ground owner*******************************************
 
   void setGyms(
