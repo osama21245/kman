@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
+import 'package:kman/core/providers/valid.dart';
 import 'package:kman/featuers/auth/widget/textfield.dart';
 
 import '../../../theme/pallete.dart';
@@ -73,7 +74,12 @@ class TakeNumScren extends ConsumerWidget {
                       color: Pallete.lightgreyColor,
                     ),
                     child: TextFiledAuth(
-                        name: "", controller: phone, istakenum: true),
+                        validator: (val) {
+                          validinput(val!, 11, 11, "phone");
+                        },
+                        name: "",
+                        controller: phone,
+                        istakenum: true),
                   ),
                 ))
               ],
@@ -81,9 +87,7 @@ class TakeNumScren extends ConsumerWidget {
             Padding(
               padding: EdgeInsets.symmetric(horizontal: size.width * 0.04),
               child: ElevatedButton(
-                onPressed: () => Get.to(VerficationScreen(
-                  phone: phone.text,
-                )),
+                onPressed: () => Get.to(VerficationScreen()),
                 child: Text(
                   'SEND',
                   style: TextStyle(

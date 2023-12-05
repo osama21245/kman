@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kman/HandlingDataView.dart';
 import 'package:kman/core/class/statusrequest.dart';
 import 'package:kman/core/common/getcolor.dart';
+import 'package:kman/featuers/auth/controller/auth_controller.dart';
 import 'package:kman/featuers/play/delegates/search_ground_delegate.dart';
 import 'package:kman/featuers/play/widget/play/custom_play_middlesec.dart';
 import 'package:kman/featuers/play/widget/play/custom_play_serarch.dart';
@@ -52,9 +53,9 @@ class _PlayHomeScreenState extends ConsumerState<PlayHomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    bool checkboxValue = true;
     Size size = MediaQuery.of(context).size;
     final color = getColor(widget.collection!);
+    final user = ref.read(usersProvider);
     List<Color> backGroundGridentColor = getGrediantColors(widget.collection!);
     return Scaffold(
       body: SafeArea(
@@ -90,7 +91,10 @@ class _PlayHomeScreenState extends ConsumerState<PlayHomeScreen> {
                         backGroundGridentColor,
                         size,
                       )),
-                  child: CustomPlaySearch(size: size)),
+                  child: CustomPlaySearch(
+                    size: size,
+                    category: "Playground",
+                  )),
               Padding(
                 padding: EdgeInsets.only(
                     left: size.width * 0.045,
@@ -106,7 +110,7 @@ class _PlayHomeScreenState extends ConsumerState<PlayHomeScreen> {
                         Checkbox(
                           checkColor: color,
                           activeColor: Pallete.whiteColor,
-                          value: checkboxValue,
+                          value: user!.isactive,
                           onChanged: (v) {},
                         ),
                         Text(

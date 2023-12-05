@@ -3,6 +3,7 @@ import 'package:kman/booking_screen.dart';
 import 'package:kman/featuers/auth/screens/finish_screen.dart';
 import 'package:kman/featuers/auth/screens/login_screen.dart';
 import 'package:kman/featuers/auth/screens/takenum_screen.dart';
+import 'package:kman/featuers/coaches-gyms/screens/coaches-gyms_home_screen.dart';
 import 'package:kman/featuers/play/screens/play_home_screen.dart';
 import 'package:kman/homemain.dart';
 
@@ -14,6 +15,6 @@ import 'home.dart';
 List<GetPage<dynamic>>? routes = [
   GetPage(
     name: "/",
-    page: () => LoginScreen(),
+    page: () => CoachesGymsHomeScreen(),
   ), //middlewares: [myMiddlware()]
 ];

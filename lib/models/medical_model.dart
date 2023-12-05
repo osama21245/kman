@@ -4,8 +4,9 @@ import 'dart:convert';
 import 'package:collection/collection.dart';
 
 class MedicalModel {
-  final String? id;
-  final String? name;
+  final String id;
+  final String userId;
+  final String name;
   final int rating;
   final String education;
   final String experience;
@@ -13,8 +14,9 @@ class MedicalModel {
   final String whatAppNum;
   final int discount;
   MedicalModel({
-    this.id,
-    this.name,
+    required this.id,
+    required this.userId,
+    required this.name,
     required this.rating,
     required this.education,
     required this.experience,
@@ -25,6 +27,7 @@ class MedicalModel {
 
   MedicalModel copyWith({
     String? id,
+    String? userId,
     String? name,
     int? rating,
     String? education,
@@ -35,6 +38,7 @@ class MedicalModel {
   }) {
     return MedicalModel(
       id: id ?? this.id,
+      userId: userId ?? this.userId,
       name: name ?? this.name,
       rating: rating ?? this.rating,
       education: education ?? this.education,
@@ -48,6 +52,7 @@ class MedicalModel {
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       'id': id,
+      'userId': userId,
       'name': name,
       'rating': rating,
       'education': education,
@@ -60,8 +65,9 @@ class MedicalModel {
 
   factory MedicalModel.fromMap(Map<String, dynamic> map) {
     return MedicalModel(
-      id: map['id'] != null ? map['id'] as String : null,
-      name: map['name'] != null ? map['name'] as String : null,
+      id: map['id'] as String,
+      userId: map['userId'] as String,
+      name: map['name'] as String,
       rating: map['rating'] as int,
       education: map['education'] as String,
       experience: map['experience'] as String,
@@ -78,7 +84,7 @@ class MedicalModel {
 
   @override
   String toString() {
-    return 'MedicalModel(id: $id, name: $name, rating: $rating, education: $education, experience: $experience, benefits: $benefits, whatAppNum: $whatAppNum, discount: $discount)';
+    return 'MedicalModel(id: $id, userId: $userId, name: $name, rating: $rating, education: $education, experience: $experience, benefits: $benefits, whatAppNum: $whatAppNum, discount: $discount)';
   }
 
   @override
@@ -86,6 +92,7 @@ class MedicalModel {
     if (identical(this, other)) return true;
 
     return other.id == id &&
+        other.userId == userId &&
         other.name == name &&
         other.rating == rating &&
         other.education == education &&
@@ -98,6 +105,7 @@ class MedicalModel {
   @override
   int get hashCode {
     return id.hashCode ^
+        userId.hashCode ^
         name.hashCode ^
         rating.hashCode ^
         education.hashCode ^

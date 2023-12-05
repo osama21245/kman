@@ -10,6 +10,7 @@ import 'package:kman/core/providers/firebase_providers.dart';
 import '../../../core/constants/constants.dart';
 import '../../../core/faliure.dart';
 import '../../../core/type_def.dart';
+import '../../../models/coache_model.dart';
 import '../../../models/user_model.dart';
 
 final AuthRepositoryProvider = Provider((ref) => AuthRepository(
@@ -41,7 +42,6 @@ class AuthRepository {
       final credential = GoogleAuthProvider.credential(
           accessToken: (googleAuth).accessToken, idToken: (googleAuth).idToken);
       UserCredential userCredential;
-
       if (isFromLogin) {
         userCredential = await _auth.signInWithCredential(credential);
       } else {
@@ -51,6 +51,8 @@ class AuthRepository {
 
       UserModel userModel;
       if (userCredential.additionalUserInfo!.isNewUser) {
+        print("===================================");
+
         userModel = UserModel(
             isactive: true,
             ingroup: [],
@@ -58,7 +60,7 @@ class AuthRepository {
             name: userCredential.user!.displayName ?? "No Name",
             profilePic:
                 userCredential.user!.photoURL ?? Constants.avatarDefault,
-            phone: userCredential.user!.phoneNumber!,
+            phone: userCredential.user!.phoneNumber ?? "Inter Your Phone",
             age: "Enter Your Age",
             uid: userCredential.user!.uid,
             isAuthanticated: true,
@@ -115,6 +117,43 @@ class AuthRepository {
     }
   }
 
+  FutureVoid signInWithEmailAndPassword(String email, String password) async {
+    try {
+      UserCredential userCredential = await _auth.signInWithEmailAndPassword(
+          email: "kamn$email@gmail.com", password: password);
+
+      if (userCredential.user != null) {
+        return right(userCredential);
+
+        // Perform actions for a successful login
+      } else {
+        // userCredential.user is null, indicating unsuccessful login
+        throw "Invalid email or password";
+
+        // Perform actions for an unsuccessful login
+      }
+    } on FirebaseException catch (e) {
+      throw e;
+    } catch (e) {
+      return left(Failure(e.toString()));
+    }
+  }
+
+  Future<Either<Failure, UserModel>> getAnyUserData(String email) async {
+    try {
+      UserModel? userdata;
+      _users.doc(email).get().then((value) {
+        userdata = UserModel.fromMap(value.data() as Map<String, dynamic>);
+        return userdata;
+      });
+      return right(userdata!);
+    } on FirebaseException catch (e) {
+      throw e.toString();
+    } catch (e) {
+      return left(Failure(e.toString()));
+    }
+  }
+
   FutureVoid verifyPhone(String phone) async {
     try {
       return right(FirebaseAuth.instance.verifyPhoneNumber(
@@ -138,8 +177,9 @@ class AuthRepository {
 
   createAccountWithEmailAndPassword(String email, String password) async {
     try {
-      UserCredential userCredential = await _auth
-          .createUserWithEmailAndPassword(email: email, password: password);
+      UserCredential userCredential =
+          await _auth.createUserWithEmailAndPassword(
+              email: "kamn$email@gmail.com", password: password);
       return right(userCredential);
     } on FirebaseException catch (e) {
       throw e;
@@ -148,31 +188,9 @@ class AuthRepository {
     }
   }
 
-  FutureVoid signInWithEmailAndPassword(String email, String password) async {
+  FutureVoid setUserData(UserModel userModel, String email) async {
     try {
-      UserCredential userCredential = await _auth.signInWithEmailAndPassword(
-          email: email, password: password);
-
-      if (userCredential.user != null) {
-        return right(userCredential);
-
-        // Perform actions for a successful login
-      } else {
-        // userCredential.user is null, indicating unsuccessful login
-        throw "Invalid email or password";
-
-        // Perform actions for an unsuccessful login
-      }
-    } on FirebaseException catch (e) {
-      throw e;
-    } catch (e) {
-      return left(Failure(e.toString()));
-    }
-  }
-
-  FutureVoid setUserData(UserModel userModel) async {
-    try {
-      return right(_users.doc(userModel.uid).set(userModel.toMap()));
+      return right(_users.doc(email).set(userModel.toMap()));
     } on FirebaseException catch (e) {
       throw e;
     } catch (e) {
@@ -182,8 +200,11 @@ class AuthRepository {
 
   FutureVoid sendCode(String code) async {
     try {
+      print(
+          "================================$verifyid==============================");
       PhoneAuthCredential credential =
           PhoneAuthProvider.credential(verificationId: verifyid, smsCode: code);
+
       return right(credential);
     } on FirebaseException catch (e) {
       throw e;

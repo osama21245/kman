@@ -12,15 +12,15 @@ class UserModel {
   final int points;
   final bool isonline;
   final bool isactive;
-  final List<String> followers;
-  final List<String> ingroup;
-  final List<String> awards;
+  final List<dynamic> followers;
+  final List<dynamic> ingroup;
+  final List<dynamic> awards;
   final String gender;
   final String country;
   final String age;
   final String city;
   final String state;
-  final List<String> myGrounds;
+  final List<dynamic> myGrounds;
   UserModel({
     required this.name,
     required this.profilePic,
@@ -50,9 +50,9 @@ class UserModel {
     int? points,
     bool? isonline,
     bool? isactive,
-    List<String>? followers,
-    List<String>? ingroup,
-    List<String>? awards,
+    List<dynamic>? followers,
+    List<dynamic>? ingroup,
+    List<dynamic>? awards,
     String? gender,
     String? country,
     String? age,
@@ -113,15 +113,15 @@ class UserModel {
       points: map['points'] as int,
       isonline: map['isonline'] as bool,
       isactive: map['isactive'] as bool,
-      followers: List<String>.from((map['followers'] as List<String>)),
-      ingroup: List<String>.from((map['ingroup'] as List<String>)),
-      awards: List<String>.from((map['awards'] as List<String>)),
+      followers: List<dynamic>.from((map['followers'] as List<dynamic>)),
+      ingroup: List<dynamic>.from((map['ingroup'] as List<dynamic>)),
+      awards: List<dynamic>.from((map['awards'] as List<dynamic>)),
       gender: map['gender'] as String,
       country: map['country'] as String,
       age: map['age'] as String,
       city: map['city'] as String,
       state: map['state'] as String,
-      myGrounds: List<String>.from((map['myGrounds'] as List<String>)),
+      myGrounds: List<dynamic>.from((map['myGrounds'] as List<dynamic>)),
     );
   }
 

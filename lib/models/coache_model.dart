@@ -7,7 +7,8 @@ import 'package:flutter/foundation.dart';
 class CoacheModel {
   final String id;
   final String name;
-  final int rating;
+  final String userId;
+  final double raTing;
   final String photo;
   final String education;
   final String whatsAppNum;
@@ -15,11 +16,12 @@ class CoacheModel {
   final String experience;
   final int price;
   final String benefits;
-  final List<String> cvs;
+  final List<dynamic> cvs;
   CoacheModel({
     required this.id,
     required this.name,
-    required this.rating,
+    required this.userId,
+    required this.raTing,
     required this.photo,
     required this.education,
     required this.whatsAppNum,
@@ -33,7 +35,8 @@ class CoacheModel {
   CoacheModel copyWith({
     String? id,
     String? name,
-    int? rating,
+    String? userId,
+    double? raTing,
     String? photo,
     String? education,
     String? whatsAppNum,
@@ -41,12 +44,13 @@ class CoacheModel {
     String? experience,
     int? price,
     String? benefits,
-    List<String>? cvs,
+    List<dynamic>? cvs,
   }) {
     return CoacheModel(
       id: id ?? this.id,
       name: name ?? this.name,
-      rating: rating ?? this.rating,
+      userId: userId ?? this.userId,
+      raTing: raTing ?? this.raTing,
       photo: photo ?? this.photo,
       education: education ?? this.education,
       whatsAppNum: whatsAppNum ?? this.whatsAppNum,
@@ -62,7 +66,8 @@ class CoacheModel {
     return <String, dynamic>{
       'id': id,
       'name': name,
-      'rating': rating,
+      'userId': userId,
+      'raTing': raTing,
       'photo': photo,
       'education': education,
       'whatsAppNum': whatsAppNum,
@@ -78,7 +83,8 @@ class CoacheModel {
     return CoacheModel(
       id: map['id'] as String,
       name: map['name'] as String,
-      rating: map['rating'] as int,
+      userId: map['userId'] as String,
+      raTing: map['raTing'] as double,
       photo: map['photo'] as String,
       education: map['education'] as String,
       whatsAppNum: map['whatsAppNum'] as String,
@@ -86,7 +92,7 @@ class CoacheModel {
       experience: map['experience'] as String,
       price: map['price'] as int,
       benefits: map['benefits'] as String,
-      cvs: List<String>.from((map['cvs'] as List<String>)),
+      cvs: List<dynamic>.from((map['cvs'] as List<dynamic>)),
     );
   }
 
@@ -97,7 +103,7 @@ class CoacheModel {
 
   @override
   String toString() {
-    return 'CoacheModel(id: $id, name: $name, rating: $rating, photo: $photo, education: $education, whatsAppNum: $whatsAppNum, categoriry: $categoriry, experience: $experience, price: $price, benefits: $benefits, cvs: $cvs)';
+    return 'CoacheModel(id: $id, name: $name, userId: $userId, raTing: $raTing, photo: $photo, education: $education, whatsAppNum: $whatsAppNum, categoriry: $categoriry, experience: $experience, price: $price, benefits: $benefits, cvs: $cvs)';
   }
 
   @override
@@ -106,7 +112,8 @@ class CoacheModel {
 
     return other.id == id &&
         other.name == name &&
-        other.rating == rating &&
+        other.userId == userId &&
+        other.raTing == raTing &&
         other.photo == photo &&
         other.education == education &&
         other.whatsAppNum == whatsAppNum &&
@@ -121,7 +128,8 @@ class CoacheModel {
   int get hashCode {
     return id.hashCode ^
         name.hashCode ^
-        rating.hashCode ^
+        userId.hashCode ^
+        raTing.hashCode ^
         photo.hashCode ^
         education.hashCode ^
         whatsAppNum.hashCode ^

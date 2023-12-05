@@ -2,8 +2,9 @@
 import 'dart:convert';
 
 class NutritionModel {
-  final String? id;
-  final String? name;
+  final String id;
+  final String name;
+  final String userId;
   final int rating;
   final String education;
   final String experience;
@@ -11,8 +12,9 @@ class NutritionModel {
   final String benefits;
   final int discount;
   NutritionModel({
-    this.id,
-    this.name,
+    required this.id,
+    required this.name,
+    required this.userId,
     required this.rating,
     required this.education,
     required this.experience,
@@ -24,6 +26,7 @@ class NutritionModel {
   NutritionModel copyWith({
     String? id,
     String? name,
+    String? userId,
     int? rating,
     String? education,
     String? experience,
@@ -34,6 +37,7 @@ class NutritionModel {
     return NutritionModel(
       id: id ?? this.id,
       name: name ?? this.name,
+      userId: userId ?? this.userId,
       rating: rating ?? this.rating,
       education: education ?? this.education,
       experience: experience ?? this.experience,
@@ -47,6 +51,7 @@ class NutritionModel {
     return <String, dynamic>{
       'id': id,
       'name': name,
+      'userId': userId,
       'rating': rating,
       'education': education,
       'experience': experience,
@@ -58,8 +63,9 @@ class NutritionModel {
 
   factory NutritionModel.fromMap(Map<String, dynamic> map) {
     return NutritionModel(
-      id: map['id'] != null ? map['id'] as String : null,
-      name: map['name'] != null ? map['name'] as String : null,
+      id: map['id'] as String,
+      name: map['name'] as String,
+      userId: map['userId'] as String,
       rating: map['rating'] as int,
       education: map['education'] as String,
       experience: map['experience'] as String,
@@ -76,7 +82,7 @@ class NutritionModel {
 
   @override
   String toString() {
-    return 'NutritionModel(id: $id, name: $name, rating: $rating, education: $education, experience: $experience, whatsAppNum: $whatsAppNum, benefits: $benefits, discount: $discount)';
+    return 'NutritionModel(id: $id, name: $name, userId: $userId, rating: $rating, education: $education, experience: $experience, whatsAppNum: $whatsAppNum, benefits: $benefits, discount: $discount)';
   }
 
   @override
@@ -85,6 +91,7 @@ class NutritionModel {
 
     return other.id == id &&
         other.name == name &&
+        other.userId == userId &&
         other.rating == rating &&
         other.education == education &&
         other.experience == experience &&
@@ -97,6 +104,7 @@ class NutritionModel {
   int get hashCode {
     return id.hashCode ^
         name.hashCode ^
+        userId.hashCode ^
         rating.hashCode ^
         education.hashCode ^
         experience.hashCode ^

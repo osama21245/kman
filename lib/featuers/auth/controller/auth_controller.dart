@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
@@ -6,6 +8,8 @@ import 'package:get/get.dart';
 import 'package:kman/core/class/statusrequest.dart';
 import 'package:kman/featuers/auth/screens/finish_screen.dart';
 import 'package:kman/featuers/auth/screens/login_screen.dart';
+import 'package:kman/homemain.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../core/constants/constants.dart';
 import '../../../core/utils.dart';
@@ -43,6 +47,30 @@ class AuthController extends StateNotifier<StatusRequest> {
   Stream<UserModel> getUserData(String uid) {
     return _authRepository.getUserData(uid);
   }
+// final usersProvider = StateProvider<UserModel?>((ref) {
+//   // Load the UserModel from shared preferences when the app starts
+//   return _loadUserModelFromPrefs();
+// });
+
+  Future<UserModel?> _loadUserModelFromPrefs() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    // Retrieve the UserModel from shared preferences
+    String? userModelJson = prefs.getString('userModel');
+    if (userModelJson != null) {
+      // If UserModel exists in shared preferences, parse and return it
+      return UserModel.fromJson(json.decode(userModelJson));
+    } else {
+      // If UserModel doesn't exist, return null or a default value
+      return null;
+    }
+  }
+
+  Future<void> saveUserModelToPrefs(UserModel userModel) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    // Convert UserModel to JSON and save it in shared preferences
+    String userModelJson = json.encode(userModel.toJson());
+    prefs.setString('userModel', userModelJson);
+  }
 
   signinWithGoogle(BuildContext context, bool isFromLogin) async {
     state = StatusRequest.loading;
@@ -50,7 +78,8 @@ class AuthController extends StateNotifier<StatusRequest> {
     state = StatusRequest.success;
 
     user.fold((l) => showSnackBar(l.message, context), (userModel) async {
-      _ref.read(usersProvider.notifier).update((state) => userModel);
+      await _ref.read(usersProvider.notifier).update((state) => userModel);
+      Get.offAll(HomeMain());
     });
   }
 
@@ -85,7 +114,7 @@ class AuthController extends StateNotifier<StatusRequest> {
         isonline: false,
         ingroup: []);
 
-    final res = await _authRepository.setUserData(userModel);
+    final res = await _authRepository.setUserData(userModel, phone);
     res.fold(
         (l) => showSnackBar(l.message, context), (r) => Get.to(LoginScreen()));
   }
@@ -113,31 +142,42 @@ class AuthController extends StateNotifier<StatusRequest> {
     });
   }
 
+  void getAnyUserData(String email, BuildContext context) async {
+    final res = await _authRepository.getAnyUserData(email);
+    res.fold((l) => showSnackBar(l.message, context), (userModel) async {
+      await _ref.read(usersProvider.notifier).update((state) => userModel);
+
+      Get.offAll(HomeMain());
+    });
+  }
+
   void signInWithEmailAndPassword(
       String email, String password, BuildContext context) async {
     state = StatusRequest.loading;
     final res =
         await _authRepository.signInWithEmailAndPassword(email, password);
-    state = StatusRequest.success;
 
-    res.fold((l) => showSnackBar(l.message, context), (r) => null);
+    res.fold((l) => showSnackBar(l.message, context), (r) async {
+      getAnyUserData(email, context);
+      state = StatusRequest.success;
+    });
   }
 
   void verifyPhone(BuildContext context, String phone) async {
     final res = await _authRepository.verifyPhone(phone);
 
-    res.fold((l) => showSnackBar(l.message, context), (r) => null);
+    res.fold((l) => showSnackBar(l.message, context), (r) {
+      Get.to(FinishScreen(
+        phone: phone,
+      ));
+    });
   }
 
   void sendCode(String code, BuildContext context, String phone) async {
     state = StatusRequest.loading;
     final res = await _authRepository.sendCode(code);
     state = StatusRequest.success;
-    res.fold((l) => showSnackBar(l.message, context), (r) {
-      Get.to(FinishScreen(
-        phone: phone,
-      ));
-    });
+    res.fold((l) => showSnackBar(l.message, context), (r) {});
   }
 
   void logOut() async {

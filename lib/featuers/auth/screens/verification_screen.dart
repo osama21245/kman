@@ -7,8 +7,9 @@ import 'package:kman/featuers/auth/controller/auth_controller.dart';
 import '../../../theme/pallete.dart';
 
 class VerficationScreen extends ConsumerStatefulWidget {
-  String? phone;
-  VerficationScreen({super.key, this.phone});
+  VerficationScreen({
+    super.key,
+  });
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() =>
@@ -19,20 +20,20 @@ class _VerficationScreenState extends ConsumerState<VerficationScreen> {
   getSms(WidgetRef ref) {
     ref
         .watch(authControllerProvider.notifier)
-        .verifyPhone(context, widget.phone!);
+        .verifyPhone(context, "01225641777");
   }
 
   getCode(WidgetRef ref, String code) {
     ref
         .watch(authControllerProvider.notifier)
-        .sendCode(code, context, widget.phone!);
+        .sendCode(code, context, "01225641777");
   }
 
-  @override
-  void initState() {
-    getSms(ref);
-    super.initState();
-  }
+  // @override
+  // void initState() {
+  //   getSms(ref);
+  //   super.initState();
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -88,7 +89,7 @@ class _VerficationScreenState extends ConsumerState<VerficationScreen> {
               fillColor: const Color.fromARGB(255, 235, 235, 235),
               borderWidth: 1,
               fieldWidth: size.width * 0.14,
-              numberOfFields: 5,
+              numberOfFields: 6,
               enabledBorderColor: const Color.fromARGB(255, 235, 235, 235),
               disabledBorderColor: Pallete.fontColor,
               borderColor: Pallete.fontColor,
@@ -108,7 +109,7 @@ class _VerficationScreenState extends ConsumerState<VerficationScreen> {
               padding: EdgeInsets.symmetric(
                   horizontal: size.width * 0.12, vertical: size.height * 0.006),
               child: ElevatedButton(
-                onPressed: () {},
+                onPressed: () => getSms(ref),
                 child: Text(
                   'VERIFY',
                   style: TextStyle(

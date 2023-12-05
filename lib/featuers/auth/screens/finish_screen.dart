@@ -108,7 +108,8 @@ class _FinishScreenState extends ConsumerState<FinishScreen> {
               SizedBox(
                 height: size.height * 0.023,
               ),
-              TextFiledAuth(name: "Confirm Password", controller: password!),
+              TextFiledAuth(
+                  name: "Confirm Password", controller: confirmPassword!),
               Padding(
                 padding: EdgeInsets.symmetric(vertical: size.height * 0.02),
                 child: CustomFinishMiddleSec(

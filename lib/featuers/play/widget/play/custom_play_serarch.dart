@@ -1,9 +1,14 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class CustomPlaySearch extends ConsumerWidget {
+  String category;
   Size size;
-  CustomPlaySearch({super.key, required this.size});
+  CustomPlaySearch({
+    required this.category,
+    required this.size,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -45,7 +50,7 @@ class CustomPlaySearch extends ConsumerWidget {
                           ),
                         ),
                         Text(
-                          "Search for Playground...",
+                          "Search for $category...",
                           style: TextStyle(
                             color: Color.fromARGB(144, 12, 73, 185),
                             fontSize: size.width * 0.03,
