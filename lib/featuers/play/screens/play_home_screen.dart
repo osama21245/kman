@@ -15,7 +15,7 @@ import '../widget/play/custom_get_grounds.dart';
 
 class PlayHomeScreen extends ConsumerStatefulWidget {
   final String? collection;
-  const PlayHomeScreen({super.key, this.collection});
+  const PlayHomeScreen({super.key, required this.collection});
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _PlayHomeScreenState();
@@ -55,7 +55,7 @@ class _PlayHomeScreenState extends ConsumerState<PlayHomeScreen> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     final color = getColor(widget.collection!);
-    final user = ref.read(usersProvider);
+    //final user = ref.read(usersProvider);
     List<Color> backGroundGridentColor = getGrediantColors(widget.collection!);
     return Scaffold(
       body: SafeArea(
@@ -110,7 +110,7 @@ class _PlayHomeScreenState extends ConsumerState<PlayHomeScreen> {
                         Checkbox(
                           checkColor: color,
                           activeColor: Pallete.whiteColor,
-                          value: user!.isactive,
+                          value: true,
                           onChanged: (v) {},
                         ),
                         Text(

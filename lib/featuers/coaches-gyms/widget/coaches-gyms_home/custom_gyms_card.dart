@@ -21,7 +21,7 @@ class CustomGymCard extends StatelessWidget {
             children: [
               Expanded(
                 child: Container(
-                  height: size.height * 0.16,
+                  height: size.height * 0.17,
                   decoration: BoxDecoration(
                       color: Pallete.primaryColor,
                       borderRadius: BorderRadius.only(
@@ -123,7 +123,7 @@ class CustomGymCard extends StatelessWidget {
                         topRight: Radius.circular(size.width * 0.018),
                         bottomRight: Radius.circular(size.width * 0.018)),
                     color: Pallete.fontColor),
-                height: size.height * 0.16,
+                height: size.height * 0.17,
                 width: size.width * 0.1,
                 child: RotatedBox(
                   quarterTurns: 3,
