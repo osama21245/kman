@@ -15,6 +15,6 @@ import 'home.dart';
 List<GetPage<dynamic>>? routes = [
   GetPage(
     name: "/",
-    page: () => CoachesGymsHomeScreen(),
+    page: () => LoginScreen(),
   ), //middlewares: [myMiddlware()]
 ];

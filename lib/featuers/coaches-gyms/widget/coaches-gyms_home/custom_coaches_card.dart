@@ -139,7 +139,7 @@ class CustomCoachesCard extends ConsumerWidget {
               RatingDisplayWidget(
                   rating: coacheModel.raTing,
                   color: Pallete.ratingColor,
-                  size: size)
+                  size: size.width * 0.06)
             ],
           ))
         ],

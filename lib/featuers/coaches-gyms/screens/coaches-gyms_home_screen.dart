@@ -4,14 +4,11 @@ import 'package:kman/HandlingDataView.dart';
 import 'package:kman/core/common/custom_uppersec.dart';
 import 'package:kman/featuers/auth/controller/auth_controller.dart';
 import 'package:kman/featuers/coaches-gyms/controller/coaches-gyms_controller.dart';
-import 'package:kman/featuers/coaches-gyms/widget/coaches-gyms_home/custom_coaches_card.dart';
 import 'package:kman/featuers/coaches-gyms/widget/coaches-gyms_home/custom_get_coaches.dart';
 import 'package:kman/featuers/coaches-gyms/widget/coaches-gyms_home/custom_get_gyms.dart';
 import 'package:kman/theme/pallete.dart';
-
 import '../../../core/class/statusrequest.dart';
 import '../../../core/providers/checkInternet.dart';
-import '../../play/screens/play_home_screen.dart';
 import '../../play/widget/play/custom_play_serarch.dart';
 
 class CoachesGymsHomeScreen extends ConsumerStatefulWidget {

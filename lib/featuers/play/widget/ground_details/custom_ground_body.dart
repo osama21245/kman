@@ -6,6 +6,7 @@ import 'package:kman/models/grounds_model.dart';
 import '../../../../theme/pallete.dart';
 import '../../controller/play_controller.dart';
 
+// ignore: must_be_immutable
 class CustomGroundBody extends ConsumerWidget {
   GroundModel groundModel;
   Size size;

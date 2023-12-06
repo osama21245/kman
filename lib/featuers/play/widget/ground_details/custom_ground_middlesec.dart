@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import '../../../../theme/pallete.dart';
 import '../play/showrating.dart';
 
+// ignore: must_be_immutable
 class CustomGroundMiddleSec extends StatelessWidget {
   Color color;
   Size size;
@@ -67,7 +68,7 @@ class CustomGroundMiddleSec extends StatelessWidget {
             height: size.width * 0.01,
           ),
           RatingDisplayWidget(
-            size: size,
+            size: size.width * 0.06,
             color: Pallete.fontColor,
             rating: 4.5,
           ),

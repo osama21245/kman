@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kman/featuers/coaches-gyms/controller/coaches-gyms_controller.dart';
 import 'package:kman/models/coache_model.dart';
-
 import '../../../core/common/custom_uppersec.dart';
 import '../../../theme/pallete.dart';
 import '../../play/widget/play/showrating.dart';
@@ -162,7 +161,7 @@ class _CoachesDetailsState extends ConsumerState<CoachesDetailsScreen> {
                     RatingDisplayWidget(
                         rating: widget.coacheModel!.raTing,
                         color: Pallete.ratingColor,
-                        size: size),
+                        size: size.width * 0.06),
                     Padding(
                       padding: EdgeInsets.symmetric(
                           horizontal: size.width * 0.09,
@@ -325,7 +324,7 @@ class _CoachesDetailsState extends ConsumerState<CoachesDetailsScreen> {
                       onTap: () => openWhatsApp(
                           ref, widget.coacheModel!.whatsAppNum, context),
                       child: Image.asset(
-                        "assets/page-1/images/facebook-logo.png",
+                        "assets/page-1/images/whatsapp.png",
                         width: size.width * 0.1,
                       ),
                     ))

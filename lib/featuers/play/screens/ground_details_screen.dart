@@ -8,6 +8,7 @@ import 'package:kman/models/grounds_model.dart';
 import '../../../core/common/custom_uppersec.dart';
 import '../widget/ground_details/custom_ground_body.dart';
 
+// ignore: must_be_immutable
 class GroundDetailsScreen extends StatelessWidget {
   Color? color;
   Size? size;

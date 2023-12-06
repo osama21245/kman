@@ -1,11 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:get/get.dart';
-import 'package:kman/featuers/coaches-gyms/screens/coaches_details_screen.dart';
-import 'package:kman/featuers/coaches-gyms/widget/coaches-gyms_home/custom_coaches_card.dart';
 import 'package:kman/featuers/coaches-gyms/widget/coaches-gyms_home/custom_gyms_card.dart';
 import 'package:lottie/lottie.dart';
-
 import '../../../../core/common/error_text.dart';
 import '../../../../core/constants/imgaeasset.dart';
 import '../../controller/coaches-gyms_controller.dart';
@@ -24,7 +20,9 @@ class CustomGetGyms extends ConsumerWidget {
                     return InkWell(
                         onTap: () {},
                         // Get.to(CoachesDetailsScreen(coacheModel: coach)),
-                        child: CustomGymCard());
+                        child: CustomGymCard(
+                          gymModel: gym,
+                        ));
                   }),
             ),
         error: (error, StackTrace) {

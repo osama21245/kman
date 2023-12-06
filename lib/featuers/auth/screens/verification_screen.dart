@@ -88,7 +88,7 @@ class _VerficationScreenState extends ConsumerState<VerficationScreen> {
               filled: true,
               fillColor: const Color.fromARGB(255, 235, 235, 235),
               borderWidth: 1,
-              fieldWidth: size.width * 0.14,
+              fieldWidth: size.width * 0.12,
               numberOfFields: 6,
               enabledBorderColor: const Color.fromARGB(255, 235, 235, 235),
               disabledBorderColor: Pallete.fontColor,
